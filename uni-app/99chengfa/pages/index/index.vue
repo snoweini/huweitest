@@ -9,7 +9,7 @@
 				
 				<view class="number-index">
 					<img v-for="(item,key) in numberIndex" :key="key" :src="item.src"
-					 mode="widthFix" class="num-pic" @tap="numberIndexTap"/>
+					 mode="widthFix" class="num-pic" @tap="numberIndexTap(item)"/>
 				</view>
 				<view class="content-wrap">
 					<view class="content">
@@ -22,22 +22,21 @@
 						</view>
 					</view>
 					<view class="button">
-						<img @tap="handleAudioTap" class="icon-speaker" mode="widthFix" src="../../static/img/speaker.png"/>
-						<text class="text">{{audioText}}</text>
-						<audio controls id="audio" src="../../static/music/mcltable.mp3" style="display: none;"></audio>
+							<img @tap="handleAudioTap" class="icon-speaker" mode="widthFix" src="../../static/img/speaker.png"/>
+							<text class="text" @tap="handleAudioTap">{{audioText}}</text>
 					</view>
 				</view>
 				<view class="calculation-wrap">
 					<view class="select-wrap">
 						<view class="select">
-							<view bindtap="handleNumToptap" :class="[item.isSelected?'selected':'','number']" v-for="(item,key) in numberIndexTop" :key="key">{{item.num}}</view>
+							<view  :class="[item.isSelected?'selected':'','number']" v-for="(item,key) in numberIndexTop" :key="key" @tap="handleNumToptap(item)">{{item.num}}</view>
 						</view>
 						<text>乘</text>
 						<view class="select">
-							<view @tap="handleNumBottomtap" :class="[item.isSelected?'selected':'','number']" v-for="(item,key) in numberIndexBottom" :key="key">{{item.num}}</view>
+							<view :class="[item.isSelected?'selected':'','number']" v-for="(item,key) in numberIndexBottom" :key="key" @tap="handleNumBottomtap(item)">{{item.num}}</view>
 						</view>
 					</view>
-					<view bindtap="calculateNum" class="button">计算</view>
+					<view @tap="calculateNum" class="button">计算</view>
 					<view class="result">
 						<text class="text">{{currentNumTop}}</text>
 						<text class="text">X</text>
@@ -58,7 +57,7 @@
 			return {
 				numberIndex: [ {
 						key: 0,
-						isSelected: !0,
+						isSelected: !1,
 						src: "../../static/img/one.png",
 						seleSrc: "../../static/img/one_sele.png"
 					}, {
@@ -182,13 +181,74 @@
 				currentNumBottom: 1,
 				resultNum: 1,
 				isAudioPlaying: !1,
-				audioText: "按顺序播放"
+				music:'../../static/music/mcltable.mp3',
+				audio:null,
+				audioText: "播放乘法口诀表"
 			}
 		},
 		onLoad() {
-
+			  
 		},
 		methods: {
+		  handleAudioTap(){
+			 var _this = this;
+			 if(!this.audio){
+				 this.audio = uni.createInnerAudioContext();
+				 this.audio.src = this.music;
+				 this.audio.loop = true;
+				 this.audio.play();
+				 this.audio.onPlay(()=>{
+					 _this.audioText = '轻触暂停'
+				 })
+			 }else{
+				 if(!this.audio.paused){
+					this.audio.pause(); 
+					this.audio.onPause(()=>{
+						 _this.audioText = '轻触继续'
+					 }) 
+				 }else{
+					 this.audio.play();
+					 this.audio.onPlay(()=>{
+						 _this.audioText = '轻触暂停'
+					 }) 
+				 }
+				 
+			 }
+			 
+		  },
+		  numberIndexTap(item){ 
+			 if(!item.isSelected){
+				 this.numberIndex.forEach(item=>{
+					 if(item.isSelected){
+						 [item.src,item.seleSrc] = [item.seleSrc,item.src]
+						 item.isSelected = !1
+					 }
+				 });
+				 
+				 [item.src,item.seleSrc] = [item.seleSrc,item.src]
+				 this.currentNumber = item.key+1 
+				 item.isSelected = !0
+			 }
+		  },
+		  handleNumToptap(item){
+			  this.numberIndexTop.forEach((item,key)=>{
+				  item.isSelected = !1
+			  })
+			  item.isSelected = !0
+			  this.currentNumTop = item.num
+			  this.resultNum = ''
+		  },
+		  handleNumBottomtap(item){
+			  this.numberIndexBottom.forEach((item,key)=>{
+				  item.isSelected = !1
+			  })
+			  item.isSelected = !0
+			  this.currentNumBottom = item.num
+			  this.resultNum = ''
+		  },
+		  calculateNum(){
+			  this.resultNum = this.currentNumTop*this.currentNumBottom
+		  },
        
 		}
 	}
@@ -204,8 +264,6 @@ view,text {box-sizing: border-box;}
 .index_main .top { width: 100%;font-size: 30rpx;height:150upx; position: relative;}
 .top-txt{font-size:40upx;position: absolute;left: 30upx;bottom: 30upx;color: #333;}
 .main{width:100%;height:auto;flex:1;overflow: auto;}
-
-
 .number-index {
     width: 690rpx;
     height: 70rpx;
@@ -220,10 +278,7 @@ view,text {box-sizing: border-box;}
     box-sizing: border-box;
 }
 
-.number-index .num-pic {
-    width: 40rpx;
-    height: 40rpx;
-}
+.number-index .num-pic {width: 40rpx; height: 40rpx;}
 
 .content-wrap {
     width: 690rpx;
@@ -245,7 +300,6 @@ view,text {box-sizing: border-box;}
     align-content: space-between;
 	background:#fff;
 }
-
 .content-wrap .content .text-wrap {
     width: 150rpx;
     display: flex;
