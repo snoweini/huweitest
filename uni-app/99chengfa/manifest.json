@@ -59,5 +59,10 @@
 			"urlCheck": false
 		},
 		"usingComponents": true
-	}
+	},
+    "h5" : {
+        "title" : "24",
+        "domain" : "www.chinaso.com",
+        "publicPath" : "./"
+    }
 }

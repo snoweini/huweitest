@@ -3,7 +3,10 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle":"custom",
+				"app-plus":{
+					"titleView":false
+					}
 			}
 		}
 	],
