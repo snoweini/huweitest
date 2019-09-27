@@ -22,7 +22,7 @@
 						</view>
 					</view>
 					<view class="button">
-							<img @tap="handleAudioTap" class="icon-speaker" mode="widthFix" src="../../static/img/speaker.png"/>
+							<img @tap="handleAudioTap" class="icon-speaker" mode="widthFix" :src="audioico"/>
 							<text class="text" @tap="handleAudioTap">{{audioText}}</text>
 					</view>
 				</view>
@@ -58,48 +58,48 @@
 				numberIndex: [ {
 						key: 0,
 						isSelected: !1,
-						src: "../../static/img/one.png",
-						seleSrc: "../../static/img/one_sele.png"
+						src: "./static/img/one.png",
+						seleSrc: "./static/img/one_sele.png"
 					}, {
 						key: 1,
 						isSelected: !1,
-						src: "../../static/img/two.png",
-						seleSrc: "../../static/img/two_sele.png"
+						src: "./static/img/two.png",
+						seleSrc: "./static/img/two_sele.png"
 					}, {
 						key: 2,
 						isSelected: !1,
-						src: "../../static/img/three.png",
-						seleSrc: "../../static/img/three_sele.png"
+						src: "./static/img/three.png",
+						seleSrc: "./static/img/three_sele.png"
 					}, {
 						key: 3,
 						isSelected: !1,
-						src: "../../static/img/four.png",
-						seleSrc: "../../static/img/four_sele.png"
+						src: "./static/img/four.png",
+						seleSrc: "./static/img/four_sele.png"
 					}, {
 						key: 4,
 						isSelected: !1,
-						src: "../../static/img/five.png",
-						seleSrc: "../../static/img/five_sele.png"
+						src: "./static/img/five.png",
+						seleSrc: "./static/img/five_sele.png"
 					}, {
 						key: 5,
 						isSelected: !1,
-						src: "../../static/img/six.png",
-						seleSrc: "../../static/img/six_sele.png"
+						src: "./static/img/six.png",
+						seleSrc: "./static/img/six_sele.png"
 					}, {
 						key: 6,
 						isSelected: !1,
-						src: "../../static/img/seven.png",
-						seleSrc: "../../static/img/seven_sele.png"
+						src: "./static/img/seven.png",
+						seleSrc: "./static/img/seven_sele.png"
 					}, {
 						key: 7,
 						isSelected: !1,
-						src: "../../static/img/eight.png",
-						seleSrc: "../../static/img/eight_sele.png"
+						src: "./static/img/eight.png",
+						seleSrc: "./static/img/eight_sele.png"
 					}, {
 						key: 8,
 						isSelected: !1,
-						src: "../../static/img/nine.png",
-						seleSrc: "../../static/img/nine_sele.png"
+						src: "./static/img/nine.png",
+						seleSrc: "./static/img/nine_sele.png"
 					} ],
 				numberList: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
 				numberIndexTop: [ {
@@ -176,12 +176,13 @@
 					isSelected: !1,
 					num: 9
 				} ],
+				audioico:'./static/img/speaker.png',
 				currentNumber: 1,
 				currentNumTop: 1,
 				currentNumBottom: 1,
 				resultNum: 1,
 				isAudioPlaying: !1,
-				music:'../../static/music/mcltable.mp3',
+				music:'./static/music/mcltable.mp3',
 				audio:null,
 				audioText: "播放乘法口诀表"
 			}
