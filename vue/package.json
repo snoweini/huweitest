@@ -1,0 +1,12 @@
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "taobao":"nrm use taobao"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
