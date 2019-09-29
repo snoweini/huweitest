@@ -1,6 +1,6 @@
 node api
 
-fs模块
+*FS模块
 1.fs.mkdir /fs.mkdirSync  创建文件夹
 
 2.fs.readdir / fs.readdirSync 读取文件夹  加Sync 是强制成同步
@@ -16,3 +16,54 @@ fs模块
 7.fs.copyFile 拷贝文件到新位置
 
 8.fs.unlink 删除文件
+
+*URL模块
+url.parse(url[,flag]) 把一个url地址进行解析 把地址中每一部分按照对象键值对方式存储起来
+
+*HTTP模块
+let server = http.createServer(
+  (req,res)=>{
+    //REQ:REQUEST请求对象，包含客户端请求信息
+    //req.url  请求的路径
+    //req.method 请求的方式 get / post
+    //req.headers 客户端的请求头信息
+    //RES:RESPONSE 相应对象，包含一些属性和方法，可以让服务器端返回给客户端内容
+
+   let {pathname,query} = url.parse(req.url,true)
+   res.writeHead(200,{"content-type":"text/plain;charset=utf-8;"}) //写入头部信息
+   res.end('hello world')
+   //服务器返回给客户端的内容一般都是string 或 buffer
+
+  }//服务创建成功 并且用户请求服务 才会触发这个回调函数，每次请求都会触发一次；
+); //创建web服务
+server.listen(3000)  //监听端口
+
+*创建静态web服务
+服务器端有一堆代码，有服务端的也有客户端的，我们一般把客户端的资源放在static文件夹下
+static
+   都是服务端要返回给客户端，由客户端浏览器渲染和解析的（前端项目，包括图片,css,js,html）
+
+server.js
+   都是需要在服务端基于node执行的（后端项目,一般只有js）
+考虑两类需求：
+   1.静态资源文件的请求处理   想要文件
+   2.API接口的请求处理   想要数据
+   区别  第一请求中有后缀名，第二类没有
+
+*__dirname和path.resolve()区别
+__dirname:当前模块所在的绝对路径（和模块中的方法在哪里执行没有关系的）
+path.resolve()：当前模块中方法在哪个模块中执行的，那么对应的绝对路径事执行模块的绝对路径
+
+*浏览器渲染原理
+用户输入url ---> DNS解析---->找到对应的服务器--->通过端口号 找到对应的web服务 80端口
+--->把客户端请求的内容相应给客户端
+
+客户端要做的
+1.发请求
+2.渲染 服务端返回的内容
+
+服务器端做的
+1.创建一个web服务  指定端口的web服务
+2.接收客户端请求信息，并且进行解析处理，把需要的内容获取到，并相应给客户端
+3.客户端需要东西返回
+
