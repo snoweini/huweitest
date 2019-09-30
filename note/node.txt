@@ -67,3 +67,37 @@ path.resolve()：当前模块中方法在哪个模块中执行的，那么对应
 2.接收客户端请求信息，并且进行解析处理，把需要的内容获取到，并相应给客户端
 3.客户端需要东西返回
 
+*客户端get 请求
+let {pathname,query} = url.parse(req.url,true)
+//get请求的数据都保存在路径里  通过url.parse 解析路径后 query属性下就是传过来的数据
+//问号传递的信息都在query中
+let {userId=0} = query;//结构赋值，默认是0
+
+
+*客户端post 请求
+let pass = ``
+req.on('data',(chunk)=>{//接收请求主体里的，可能被触发多次，chunk返回的是每次的buffer格式的内容
+   pass += chunk
+})
+req.on('end',()=>{//请求主体内容接收完
+   qs.parse(pass)  //pass是一个urlencode字符串 需要用qs插件把它转化成json格式 然后插入数据库
+   readUser().then(....
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
