@@ -1,0 +1,17 @@
+
+ react-native  ios下打包  
+在终端运行  react-native bundle --entry-file index.ios.js --bundle-output ./ios/index.ios.jsbundle --platform ios --assets-dest ./ios --dev false
+entry-file 文件入口
+bundle-output:打包文件出口
+
+注意：ios/MyApp(项目同名文件夹)/ 新建一个文件夹bundle  把打包出来的文件复制进去一份。
+把打包出来的两个文件拖入xcode里项目同名文件夹下  xcode会自动弹出一个对话框  确定后 
+
+ 在xcode中 找到 AppDelegate.m 文件 修改文件配置信息
+ 注释掉：jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+ 添加新信息：jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
+ 目的是告诉xcode 用打包后的文件 来构建程序
+
+ 在Xcode上调试选择链接的手机名，选中根文件夹，出现设置信息，选择开发者账号即可，注意ios版本与手机使用版本保持一致即可，然后就可以点开始，build到手机里了。(最好链接iphone的时候保留打开的itunes)
+
+
