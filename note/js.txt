@@ -232,3 +232,123 @@ console.log(soth);   // ["m", " ", "t", "h", "e", " ", "b", "o", "n", "e", " ",
 //let [ats] = null //会报错  因为不能转成对象型数据进行解构
 //let [ats] = 6666//数字也会报错
 //总结：只有三中数据形式可以进行解构操作：对象，数组，字符串
+/***********************************************************************************************/
+//let 和 const
+
+在ES6之前，我们都是用var来声明变量，而且JS只有函数作用域和全局作用域，没有块级作用域，所以{}限定不了var声明变量的访问范围。
+let增加了块级作用域
+let不能像var一样变量提升，用let声明的变量，不存在变量提升。而且要求必须 等let声明语句执行完之后，变量才能使用，不然会报Uncaught ReferenceError错误。
+let不允许在相同作用域内，重复声明同一个变量。否则报错：Uncaught SyntaxError: Identifier 'XXX' has already been declared,var则可以，规则是同一作用域里，后命名的覆盖前面的
+目的是让js代码更规范和安全
+
+let表示声明变量，而const表示声明常量，两者都为块级作用域；const 声明的变量都会被认为是常量，意思就是它的值被设置完成后就不能再修改了：
+const a = 1
+a = 0 //报错
+如果const的是一个对象，对象所包含的值是可以被修改的。抽象一点儿说，就是对象所指向的地址没有变就行：
+const student = { name: 'cc' }
+
+student.name = 'yy';// 不报错
+student  = { name: 'yy' };// 报错
+/**********************************************************************************************/
+//模板字符串
+在ES6之前，我们往往这么处理模板字符串：
+通过“\”和“+”来构建模板
+$("body").html("This demonstrates the output of HTML \
+content to the page, including student's\
+" + name + ", " + seatNumber + ", " + sex + " and so on.");
+
+而对ES6来说
+
+基本的字符串格式化。将表达式嵌入字符串中进行拼接。用${}来界定；
+ES6反引号(``)直接搞定
+$("body").html(`This demonstrates the output of HTML content to the page, 
+including student's ${name}, ${seatNumber}, ${sex} and so on.`);
+/**********************************************************************************************/
+//箭头函数（Arrow Functions）
+ES6 中，箭头函数就是函数的一种简写形式，使用括号包裹参数，跟随一个 =>，紧接着是函数体；
+
+箭头函数最直观的三个特点。
+
+1不需要 function 关键字来创建函数 x=>{alert(x)}  ====> function(x){alert(x)}
+2省略 return 关键字  x=>x+1   ====>  function(x){return x+1}
+3继承当前上下文的 this 关键字 自己没有this 会去上一层找this  解决一些回调中this指向了window的问题 例如setTimeout
+/***********************************************************************************************/
+//函数的参数默认值
+// ES6之前，当未传入参数时，text = 'default'；
+function printText(text) {
+    text = text || 'default';
+    console.log(text);
+}
+
+// ES6；
+function printText(text = 'default') {
+    console.log(text);
+}
+
+printText('hello'); // hello
+printText();// default
+/************************************************************************************************/
+Spread / Rest 操作符
+Spread / Rest 操作符指的是 ...，具体是 Spread 还是 Rest 需要看上下文语境。
+当被用于迭代器中时，它是一个 Spread 操作符：
+function foo(x,y,z) {
+  console.log(x,y,z);
+}
+ 
+let arr = [1,2,3];
+foo(...arr); // 1 2 3
+当被用于函数传参时，是一个 Rest 操作符：当被用于函数传参时，是一个 Rest 操作符：
+function foo(...args) {
+  console.log(args);
+}
+foo( 1, 2, 3, 4, 5); // [1, 2, 3, 4, 5]
+可以巧妙的获取argument数组
+/**********************************************************************************************/
+for … of循环是ES6引入的新的语法，用for … of循环遍历集合
+
+for...of语句在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环，调用自定义
+var arr = [1,2,3]
+for (var value of arr){
+  console.log(value);
+}//输出 1，2，3
+
+for...in 循环
+for...in 语句用于遍历数组或者对象的属性（对数组或者对象的属性进行循环操作）。
+
+for (var key in arr){
+  console.log(key);
+}//输出 0，1，2
+/**********************************************************************************************/
+es6模块化
+export 导出模块
+
+import 引入模块
+
+a.js
+export let a = 1;
+
+b.js
+import {a} from './a.js'   a  /或者/ import * as b from './a.js'  b.a
+as关键字
+编程的同学对as都容易理解，简单的说就是取一个别名。export中可以用，import中其实可以用：
+
+// a.js
+var a = function() {};
+export {a as fun};
+
+// b.js
+import {fun as a} from './a';
+a();
+
+默认导出  export default {a:1}
+
+import any from './a.js'
+any.a //1
+
+
+
+
+
+
+
+
