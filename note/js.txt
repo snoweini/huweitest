@@ -1,0 +1,234 @@
+*面向对象的继承方式
+
+//1.原型链继承 用父类的实例来继承
+//缺点：父类新增原型方法/原型属性，子类都能访问到，父类一变其它的都变了
+// function person(name){
+//   this.name = name;
+// }
+// person.prototype.getName = function(){
+//   alert(this.name);
+// }
+
+// function parent(age){
+//   this.age = age;
+// }
+// parent.prototype = new person('小明');
+// parent.prototype.getAge = function(){
+//   alert(this.age)
+// }
+
+// var result = new parent(22);
+// result.getName();
+// result.getAge();
+
+//2.构造继承 核心：使用父类的构造函数来增强子类实例，等于是复制父类的实例属性给子类（没用到原型）
+// 缺点： 方法都在构造函数中定义， 只能继承父类的实例属性和方法，不能继承原型属性/方法，无法实现函数复用，每个子类都有父类实例函数的副本，影响性能
+// function person(name){
+//   this.name = name;
+//   this.friends = ['小红','小花']
+//   this.getName = function(){
+//     alert(this.name)
+//   }
+// }
+// person.prototype.getFriends = function(){//这个在原型上的方法是无法继承到的
+//   alert(this.friends)
+// }
+
+// function parent(age){
+//   person.call(this,'老王');
+//   this.age = age
+// }
+// parent.prototype.getAge = function(){
+//   alert(this.age)
+// }
+// var result = new parent(22);
+// result.getName()
+// result.getAge()
+// result.getFriends()
+//3、组合继承   集合1，2继承方式的优点  一般采用这种方式来实现js的继承
+// 核心：通过调用父类构造，继承父类的属性并保留传参的优点，然后再通过将父类实例作为子类原型，实现函数复用
+// 缺点：调用了两次父类构造函数，生成了两份实例（子类实例将子类原型上的那份屏蔽了）
+// function person(name){
+//   this.name = name;
+//   this.friends = ['小红','小花']
+// }
+// person.prototype.getName = function(){
+//   alert(this.name);
+// }
+
+// function parent(age){
+//   person.call(this,'老王')
+//   this.age = age
+// }
+// parent.prototype = new person('老王')
+// parent.prototype.getAge = function(){
+//   alert(this.age)
+// }
+
+// var result = new person('小明')
+// result.getName();
+// result.friends.push('阿花');
+// console.log(result.friends)
+
+// var result1 = new parent(22);
+// result1.getName();
+// result1.getAge();
+// console.log(result1.friends)
+//4、寄生组合继承
+// 核心：通过寄生方式，砍掉父类的实例属性，这样，在调用两次父类的构造的时候，就不会初始化两次实例方法/属性，避免的组合继承的缺点
+// 缺点：堪称完美，但实现较为复杂
+// function person(name){
+//   this.name = name;
+//   this.friends = ['小红','小花'];
+// }
+// person.prototype.getName = function(){
+//   alert(this.name);
+// }
+
+// function parent(age){
+//   person.call(this,'老王')
+//   this.age = age
+// }
+// (function(){//自定义一个新的构造函数作为类似中间件，先用定义的原型指向父类的原型 这样新的原型上的就有父类原型
+//            //然后子类原型指向这个新构造函数的实例  就完成了继承 避免了父类的二次实例化
+//    var newObj = function(){}
+//    newObj.prototype = person.prototype;
+//    parent.prototype = new newObj();
+// })()
+// parent.prototype.getAge = function(){
+//   alert(this.age)
+// }
+
+// var result = new parent(33);
+// result.getName();
+// result.getAge();
+
+//es6对象继承方式
+class person{
+  constructor(name){//属性需要传的参数 写在constructor （）里
+    this.name = name;
+    this.friends = ['小红','小花']
+    //constructor 里都是类的属性
+  }
+  //constructor 外写的是 类的方法  类似传统的prototype
+  getName(){
+    alert(this.name)
+  }
+}
+
+class parent extends person {//通过extends 来继承父类
+  constructor(name,age){//把父类需要的参数传进来 name
+    super(name)//super相当于以前的call改变this指向  同时传入父类需要的参数 name
+    this.age = age;
+  }
+  getAge(){
+    alert(this.age)
+  }
+}
+
+var test = new parent('小明',22);
+test.getName();
+test.getAge();
+
+**********************************************************************************
+//es6解构***** 解构赋值可以把对象object 或 数组array  对应的变量里的某一对应项解构出某项的值
+//解构会把数据隐式转换成对象或数组  然后进行解构操作 ---- undefined和null不可以会报错
+/*数组的解构*/
+//一般的解构赋值
+var arr = [1,2,3,4]
+var [a,b] = arr;
+console.log(a);//1
+console.log(b);//2
+//复杂的结构赋值
+var arr2 = [1,2,3,[4,5,[6]]]
+var [, , ,[, ,[g]]] = arr2
+console.log(g)//6
+//与扩展符号...结合使用
+//*扩展符
+var arr3 = [1,2,3,4];
+var arr4 = [5,6,7];
+var narr = [...arr3,...arr4];
+console.log(narr) //[1,2,3,4,5,6,7]
+
+var arr5 = [1,2,3,4,5,6,7];
+var [aa,bb,...cc] = arr5;
+console.log(aa)//1
+console.log(bb)//2
+console.log(cc)//[3,4,5,6,7]
+//可以给变量赋一个默认值
+var arr6 = [1,undefined,undefined,2,null];
+var [w,x=2,y,z=1,u=33] = arr6;
+console.log(w)//1
+console.log(x)//2
+console.log(y)//undefined
+console.log(z)//2
+console.log(u)//null  null会被看作是一个对象 而覆盖默认值
+//交换变量
+let s = 12;
+let sd = 15;
+[s,sd] = [sd,s];
+console.log(s);//15
+console.log(sd);//12
+
+/*对象的解构*/
+//一般使用
+var obj = {
+  name:'小明',
+  age:12
+}
+var {name,age} = obj;
+console.log(name);//小明
+console.log(age)//12
+//复杂的例子
+var obj1 = {
+   status:'ok',
+   data:[{
+        username:'huwei',
+        password:123456,
+        nick:'yuki'
+      },{
+        username:'hw',
+        password:33332,
+        nick:'mavis'
+      }]
+}
+var {data:[ass,{nick:uname}]} = obj1
+console.log(ass);//{username:'huwei',password:123456,nick:'yuki'}
+console.log(uname)//'mavis'
+//结合扩展运算符
+let obj2 = {
+  id:1, name:'huwei',age:33
+}
+let {id:sid,...oth} = obj2
+console.log(sid);//1
+console.log(oth);//{name:"huwei",age:33}
+//如何对已经申明了的变量进行对象的解构赋值
+let ages;
+const obj3 = {
+    name:'小明',
+    age:22
+};
+//{ ages } = obj3;    // 这样是会报错的，因为这里的{}被认为是一个块级作用域
+({ ages } = obj3);  // <= 解决办法
+console.log(ages)                // 不过，最好还是在声明的同时进行解构赋值如何对已经申明了的变量进行对象的解构赋值
+// 默认值
+let girlfriend = {
+    gname: "小红",
+    gage:22
+};
+let {gname="小明",gage,glike='游泳'} = girlfriend;
+console.log(gname)//小红   如果解构值不是undefined,解构会覆盖默认值
+
+/*解构字符串*/
+const str = "I am the bone of my sword"; // 我是剑骨头
+const [sa, sb, sc, ...soth] = str;
+console.log(sa);     // "I"
+console.log(sb);     // " "
+console.log(sc);     // "a"
+console.log(soth);   // ["m", " ", "t", "h", "e", " ", "b", "o", "n", "e", " ", 
+                    // "o", "f", " ", "m", "y", " ", "s", "w", "o", "r", "d"]
+
+//let {ats} = undefined//会报错  因为不能转成对象型数据进行解构
+//let [ats] = null //会报错  因为不能转成对象型数据进行解构
+//let [ats] = 6666//数字也会报错
+//总结：只有三中数据形式可以进行解构操作：对象，数组，字符串

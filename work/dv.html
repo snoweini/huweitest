@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+     <meta charset="UTF-8">
+     <meta name="viewport"   content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+     <title>用户测试用例</title>
+     <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" />
+     <script type="text/javascript" src="http://n2.static.pg0.cn/www/common/base/js/jquery-1.9.1.min.js"></script>
+     <script charset="utf-8" type="text/javascript" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    </head>
+    <body>
+     <p>文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11文章内容11</p>
+     <div id="media1565247195397" class="insert-page-video insert-media-tag" width="400" height="300" data-url="http://n3.cmsfile.pg0.cn/group1/M00/05/89/CgoOEF1LxsKAK46CATRtjX5Uryc011.mp4" data-cover="http://dev.rms.chinaso365.com:80/img/postImg.htm?key=bfbdb788-f7b9-400b-87cc-597502fb916a.jpg"></div>
+    <p>文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222文章内容文22222</p>
+    <div id="media15652397" class="insert-page-video insert-media-tag" width="400" height="300" data-url="http://n3.cmsfile.pg0.cn/group1/M00/05/89/CgoOEF1LxsKAK46CATRtjX5Uryc011.mp4" data-cover="http://dev.rms.chinaso365.com:80/img/postImg.htm?key=bfbdb788-f7b9-400b-87cc-597502fb916a.jpg"></div>
+    </body>
+</html>
+<script>
+;(function($,window){
+      var doms = $('.insert-page-video');//根据这个class找到所有插入的视频dom节点
+      var varr = [];
+      doms.each(function(i,item){
+          var videoSrc = $(this).attr('data-url');
+          var videoCover = $(this).attr('data-cover');
+          var h = $(this).attr('height')+'px'||'300px';
+          var w = $(this).attr('width')+'px'||'400px';
+          //移除节点上信息
+          $(this)
+          .removeAttr('style')
+          .removeAttr('width')
+          .removeAttr('height')
+          .removeAttr('data-url')
+          .removeAttr('data-cover')
+          .html('<div id="chinaso_vd_'+i+'" style="margin:0 auto;"></div>');//插入播放器节点
+          var player = new Aliplayer(
+            {
+                  id:'chinaso_vd_'+i,
+                  width: w,
+                  height:h,
+                  autoplay: false,
+                  source : videoSrc,
+                  cover:videoCover
+            },
+            function(player){//视频窗口渲染后回调
+                  $('#chinaso_vd_'+i).on('click',function(){//视频窗口绑定点击事件
+                        var sid = $(this).attr('id').split('vd_')[1]; 
+                        for(var i = 0; i<varr.length; i++){//先清空绑定的事件
+                            varr[i].off('requestFullScreen');
+                            varr[i].off('play');         
+                        };
+                        varr[sid].on('play',function(e){ //播放时暂停其他的
+                              if(varr){
+                                  for(var i = 0; i<varr.length; i++){
+                                      if(i==sid){
+                  
+                                      }else{
+                                          varr[i].pause();
+                                      }
+                                  }
+                              }
+                        });
+                        varr[sid].on('requestFullScreen',function(e){//放大时播放当前暂停其他的
+                              if(varr){
+                                  varr[sid].play(); 
+                                  for(var i = 0; i<varr.length; i++){
+                                      if(i==sid){
+                                      }else{
+                                          varr[i].pause();
+                                      }
+                                   }
+                               }
+                        }); 
+                    });
+            });
+          varr.push(player);//创建的对象保存在公共数组里 等待调用
+      }); 
+    })(jQuery,window) 
+</script>
