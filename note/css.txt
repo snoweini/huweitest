@@ -1,0 +1,29 @@
+/**************************************************/
+flex布局总结
+父级里
+display:flex; 强调用flex布局
+flex-wrap:如果父级被撑满如何排列，wrap换行,nowrap强制在一行;
+flex-direction:规定flex里布局方向，row横向从左到右，column纵向从上到下;
+align-items (适用于父类容器上)align-items:center;
+设置或检索弹性盒子元素在侧轴（纵轴）方向上的对齐方式。flex-start,flex-end,center,baseline,strecth
+justify-content(父容器上) 定义横轴排列方式
+设置或检索弹性盒子元素在主轴（横轴）方向上的对齐方式 flex-start,flex-end,center,space-between,space-around,space-evenly
+
+排列的子元素里
+flex-grow:如果父级有多余的则放大占领多余的空间;
+flex-shrink 如果父级空间不够 则缩小以适应
+flex-basis 替换width声明  声明这个元素的宽度，会覆盖width属性
+//简写
+flex:0 0 50%; 等价于 flex-grow:0; flex-shrink:0; flex-basis:50%;
+注意flex:0 0 0和flex:0 0 0%意义是不一样的；
+简单的例子：
+<div class="wrap"> 
+   <ul class="main">
+     <li></li>
+     <li style="height:200px;"></li>
+     <li></li>
+   </ul> 
+</div>
+.wrap{width:100%;}
+.main{display: flex; flex-direction:row;flex-wrap:wrap; align-items:center;justify-content:flex-start;}
+.main li{flex:0 0 25%;height:100px; background:#ccc;list-style: none; margin-left:5%;margin-top:20px;}
