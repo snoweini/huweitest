@@ -344,6 +344,107 @@ a();
 
 import any from './a.js'
 any.a //1
+/***********************************************************************************/
+ECMAScript 5 为 JavaScript 添加了大量新的对象方法，如下
+Object.defineProperty(object, property, descriptor) // 添加或更改对象属性 vue实现双向数据绑定的基础
+Object.defineProperties(object, descriptors) // 添加或更改多个对象属性
+Object.keys(object) // 以数组返回所有可枚举的属性
+Object.freeze(object) // 防止对对象进行任何更改
+Object.isFrozen(object) // 如果对象被冻结，则返回 true
+Object.getOwnPropertyDescriptor(object, property) // 访问属性
+Object.getOwnPropertyNames(object) // 以数组返回所有属性
+Object.create(object,[descriptors])  //以指定对象为原型创建新的对象
+
+es6
+Object.assign(obj1,obj2) //合并obj1,obj2对象 返回一个新的对象
+Object.is(value1,value2) //value1 需要比较的第一个值value2 需要比较的第二个值
+                           方法判断两个值是否是相同的值 不同于== 和=== 这个相同指的是完全相同
+Object.keys()
+Object.values()
+
+
+/********************************************************************************/
+//判断Array的6种办法
+1. instanceof 操作符判断
+用法：arr instanceof Array
+instanceof 主要是用来判断某个实例是否属于某个对象
+let arr = [];
+console.log(arr instanceof Array); // true
+
+2.对象构造函数的 constructor判断
+用法：arr.constructor === Array
+Object的每个实例都有构造函数 constructor，用于保存着用于创建当前对象的函数
+let arr = [];
+console.log(arr.constructor === Array); // true
+
+3.Array 原型链上的 isPrototypeOf
+用法：Array.prototype.isPrototypeOf(arr)
+Array.prototype  属性表示 Array 构造函数的原型
+其中有一个方法是 isPrototypeOf() 用于测试一个对象是否存在于另一个对象的原型链上。
+let arr = [];
+console.log(Array.prototype.isPrototypeOf(arr)); // true
+
+4.Object.getPrototypeOf
+用法：Object.getPrototypeOf(arr) === Array.prototype
+Object.getPrototypeOf() 方法返回指定对象的原型
+
+所以只要跟Array的原型比较即可
+let arr = [];
+console.log(Object.getPrototypeOf(arr) === Array.prototype); // true
+
+5.Object.prototype.toString
+用法：Object.prototype.toString.call(arr) === '[object Array]'
+虽然Array也继承自Object，但js在Array.prototype上重写了toString，而我们通过toString.call(arr)实际上是通过原型链调用了。
+let arr = [];
+console.log(Object.prototype.toString.call(arr) === '[object Array]'); // true
+
+6.Array.isArray
+用法：Array.isArray(arr)
+ES5中新增了Array.isArray方法,IE8及以下不支持
+let arr = [];
+console.log(Array.isArray(arr)); // true
+
+/*************************************************************************************/
+//js中遍历数组的方法
+1.第一种最常用的：for循环
+
+ for(j = 0; j < arr.length; j++) {
+    break;    //终止循环
+    continue;  //跳过本次循环
+    return; // return所在函数
+  } //对于数组较大时，优化比较明显；
+  //for循环只能遍历数组, 不能遍历对象.
+
+2.第二种：foreach
+arr.forEach(function(e){  
+   
+});
+//forEach本身无法跳出所以循环，可采用将forEach放入try{},catch{},手动抛出异常的方式
+//forEach无法遍历对象，低版本ie不支持
+//forEach无法使用break，continue跳出循环，使用return时，效果和在for循环中使用continue一致
+
+3.for ……in
+var arr = new Array("first", "second", "third") 
+for(var item in arr) {
+document.write(arr[item]+",");
+}//for……in 的效率比较低，for in主要用于遍历对象属性
+//for...in 遍历数组的缺点：
+数组的键名是数字，但是for…in循环是以字符串作为键名“0”、“1”、“2”等等。
+for…in循环不仅遍历数字键名，还会遍历手动添加的其他键，甚至包括原型链上的键。
+某些情况下，for…in循环会以任意顺序遍历键名。
+
+4.map 遍历
+arr.map(function(n){  
+   
+});//该方法只支持数组 map方法使用其提供函数的每次返回结果生成一个新的数组.
+
+5.第五种：for……of 遍历（需要ES6支持）
+for(let value of arr) {  
+   
+});
+//es6 新推出的 for...of 循环方式，性能和 for 循环差不多，推荐使用 for...of 遍历数组和对象
+for、map是比较常用的两种方法，性能也还行。
+
 
 
 
