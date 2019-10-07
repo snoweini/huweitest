@@ -444,8 +444,52 @@ for(let value of arr) {
 });
 //es6 新推出的 for...of 循环方式，性能和 for 循环差不多，推荐使用 for...of 遍历数组和对象
 for、map是比较常用的两种方法，性能也还行。
+/**************************************************************************************/
+//算法： 排序的几种方法
+//冒泡排序
+// function maopao(arr){
+//   for (var i = 0; i<arr.length; i++){
+//     for(var j=0; j<arr.length-1-i;j++){//因为每次冒泡都把最大放到最后了  所以第二次遍历 可以不用遍历后面的i项
+//        if(arr[j]>arr[j+1]){
+//           var temp = arr[j];
+//           arr[j] = arr[j+1];
+//           arr[j+1] = temp;
+//        }
+//     }
+//   }
+//   return arr
+// }
+//选择排序
+// function selectSort(arr){
+//   var minIndex,temp
+//   for(var i = 0; i<arr.length;i++){
+//       minIndex = i
+//       for(var j=i;j<arr.length;j++){//寻找i以后的项
+//          if(arr[j]<arr[minIndex]){//找出比当前i索引下的值小的j索引  保存到变量
+//            minIndex = j
+//          }
+//       }
+//       temp = arr[minIndex]; //把找到最小的j索引的值  替换 当前第i项   这样就保证每次都把最小的放到前面了
+//       arr[minIndex] = arr[i];
+//       arr[i] = temp
+//   }
+//   return arr
+// } 
+//插入排序（Insertion Sort）
+// function insertionSort(arr) {
+//   var preIndex,temp,len = arr.length;
+//   for(var i=1;i<len;i++){
+//      preIndex = i-1;
+//      temp = arr[i];
+//      while(preIndex>=0&&arr[preIndex]>temp){//进入循环的条件 前一项值大于当前项  
+//        arr[preIndex+1] = arr[preIndex]     //就把当前项替换成前一项  
+//        preIndex--    //然后继续查下一个是不是符合循环条件
+//      }
+//      arr[preIndex+1] = temp //跳出循环时的preIndex+1项是没有值的因为比temp大的都移到前面项去了把记录的temp填入
+//   }
+//   return arr
 
-
+// } 
 
 
 
