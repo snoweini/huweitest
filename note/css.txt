@@ -27,3 +27,109 @@ flex:0 0 50%; 等价于 flex-grow:0; flex-shrink:0; flex-basis:50%;
 .wrap{width:100%;}
 .main{display: flex; flex-direction:row;flex-wrap:wrap; align-items:center;justify-content:flex-start;}
 .main li{flex:0 0 25%;height:100px; background:#ccc;list-style: none; margin-left:5%;margin-top:20px;}
+/*********************************************************************************************************/
+//css3引入本地字体文件
+@font-face{
+	font-family:fzjq;  //给引入字体文件命名  不需要''  font-family不需要引号
+	src:url('../../static/fzjqgbk.ttf') //引用路径
+}
+
+/************************************************************************************/
+CSS3 @media 查询
+//实例
+如果文档宽度小于 300 像素则修改背景颜色(background-color):
+@media screen and (max-width: 300px) {
+    body {
+        background-color:lightblue;
+    }
+}
+//语法
+@media mediatype and|not|only (media feature) {
+    CSS-Code;
+}
+mediatype一般用 screen	用于检测电脑屏幕，平板电脑，智能手机等。
+
+/***********************************************************************************/
+h5头部信息
+<head>
+　　<meta charset="utf-8">
+　　<title>口袋小鼠</title>
+　　<meta name="description" content="">
+　　<!-- 避免IE使用兼容模式 -->
+　　<meta http-equiv="X-UA-Compatible" content="IE=edge">
+　　<!-- 启用360浏览器的极速模式(webkit) -->
+　　<meta name="renderer" content="webkit">
+　　<!-- 是否启动webapp功能，会删除默认的苹果工具栏和菜单栏。 -->
+　　<meta name="apple-mobile-web-app-capable" content="yes">
+　　<!-- 据实际的页面设计的主体色为搭配来进行设置。 -->
+　　<meta name="apple-mobile-web-app-status-bar-style" content="black">
+　　<!-- 忽略页面中的数字识别为电话号码,email识别 -->
+　　<meta name="format-detection" content="telephone=no, email=no">
+　　<!-- 视图窗口，移动端特属的标签。 -->
+　　<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+</head>
+
+/****************************************************************************************/
+//CSS Colors
+CSS的颜色可以通过以下方法指定：
+
+1十六进制颜色 #ff0000;
+2RGB颜色     rgb(255,0,0);
+3RGBA颜色    rgba(255,0,0,0.5);
+4HSL色彩     hsl(120,65%,75%);
+5HSLA颜色    hsla(120,65%,75%,0.3);
+6预定义/跨浏览器的颜色名称  blue   red  yellow....
+
+/**************************************************************************************/
+//CSS calc() 函数
+使用 calc() 函数计算 <div> 元素的宽度:
+//定义与用法
+calc() 函数用于动态计算长度值。
+
+需要注意的是，运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)；
+任何长度值都可以使用calc()函数进行计算；
+calc()函数支持 "+", "-", "*", "/" 运算；
+calc()函数使用标准的数学运算优先级规则；
+#div1 {
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 100px);
+    border: 1px solid black;
+    background-color: yellow;
+    padding: 5px;
+    text-align: center;
+}
+/**************************************************************************************/
+//css3动画
+背景颜色逐渐地从红色变化到蓝色：
+
+@keyframes mymove
+    {
+    from {background-color:red;}
+    to {background-color:blue;}
+}
+ 
+/*Safari 和 Chrome:*/
+@-webkit-keyframes mymove
+{
+    from {background-color:red;}
+    to {background-color:blue;}
+}
+
+
+//过渡动画
+div
+{
+transition: width 1s linear 2s;
+}
+
+
+
+
+
+
+
+
+
+
+
