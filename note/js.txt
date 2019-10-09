@@ -129,6 +129,15 @@ class parent extends person {//通过extends 来继承父类
 var test = new parent('小明',22);
 test.getName();
 test.getAge();
+///////////////////////关于对象的继承补充知识
+一个对象原型 function father(){...}
+一个对象的实例  var f = new father()
+实例上的 __proto__ 属性  对应的是  原型上的原型链  father.prototype
+两者是同一个引用
+f.__proto__ === father.prototype   => true;
+
+实例的constructor 属性   对应的是  这个对象的原型
+f.constructor === father   => true
 
 **********************************************************************************
 //es6解构***** 解构赋值可以把对象object 或 数组array  对应的变量里的某一对应项解构出某项的值
