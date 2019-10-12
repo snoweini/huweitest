@@ -356,7 +356,34 @@ any.a //1
 /***********************************************************************************/
 ECMAScript 5 为 JavaScript 添加了大量新的对象方法，如下
 Object.defineProperty(object, property, descriptor) // 添加或更改对象属性 vue实现双向数据绑定的基础
+//设置一般对象
+var obj = {}
+Object.defineProperty(obj,'name',{
+     value:'huwei',
+     writable:true,//是否可写入  默认false
+     enumerable:true,//是否可出现在对象的枚举属性中 默认false
+     configurable:true //是否允许改变或删除 默认false 
+
+   }
+})
+//劫持写入（set） 读取（get） vue实现的基础 这样就可以知道对象什么时候插入了新数据  什么时候调用了数据，
+这就是双向绑定的基础
+var obj = {}
+Object.defineProperty(obj,'name',{
+     set(newval){//传入新赋的值
+        console.log(newval)
+        this.val = newval//在内部用一个属性记录值
+     },
+     get(v){
+       return this.val//获取内部属性上的值 return 到外面调用
+     } 
+})
+obj['name'] = 'huwei'
+console.log(obj.name)
+要注意的一点是：在 descriptor 中不能同时设置访问器（get 和 set）和 wriable 或 value，否则会错，就是说想用 get 和 set，就不能用 writable 或 value 中的任何一个。
+//////////////////////////////////////////////
 Object.defineProperties(object, descriptors) // 添加或更改多个对象属性
+Object.values(obj)  //以数组返回所有可枚举的值
 Object.keys(object) // 以数组返回所有可枚举的属性
 Object.freeze(object) // 防止对对象进行任何更改
 Object.isFrozen(object) // 如果对象被冻结，则返回 true
