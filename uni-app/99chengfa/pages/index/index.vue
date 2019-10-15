@@ -45,7 +45,7 @@
 						<text class="text">{{resultNum}}</text>
 					</view>
 				</view>
-				
+				<view class="bottom_wrap"></view>
 			</view>
 		</view>
 	</view>
@@ -343,12 +343,13 @@ view,text {box-sizing: border-box;}
 
 .calculation-wrap {
     width: 690rpx;
-    height: 520rpx;
+    height: 720rpx;
     margin: 40rpx auto 0 auto;
     padding: 50rpx;
     overflow: hidden;
     border-radius: 25rpx;
-    background: #fff;
+    background:url(../../static/img/bg2.png) no-repeat;
+	background-size:cover;
     box-sizing: border-box;
 }
 
@@ -357,6 +358,7 @@ view,text {box-sizing: border-box;}
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+	margin-top:140rpx;
 }
 
 .calculation-wrap .select-wrap .select {
@@ -378,7 +380,7 @@ view,text {box-sizing: border-box;}
 
 .calculation-wrap .select-wrap .select .selected {
     color: #fff;
-    background: #94bd3a;
+    background: #01B1A6;
 }
 
 .calculation-wrap .select-wrap text {
@@ -393,7 +395,7 @@ view,text {box-sizing: border-box;}
     line-height: 70rpx;
     margin: 60rpx auto 0 auto;
     border-radius: 35rpx;
-    background: #94bd3a;
+    background: #01B1A6;
     color: #fff;
     font-size: 36rpx;
     text-align: center;
@@ -405,4 +407,5 @@ view,text {box-sizing: border-box;}
     font-size: 45rpx;
     color: #222;
 }
+.bottom_wrap{width:100%; height:150rpx;}
 </style>

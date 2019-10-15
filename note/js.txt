@@ -397,7 +397,36 @@ Object.is(value1,value2) //value1 需要比较的第一个值value2 需要比较
                            方法判断两个值是否是相同的值 不同于== 和=== 这个相同指的是完全相同
 Object.keys()
 Object.values()
+/*********************************************************************************/
+//vue实现原理代码
+1.利用defineProperty重写对象 实现set和get时的劫持
+var obj = {name:'huwei'}
+observe(obj)
+obj.name = 'yuki'//
+console.log(obj.name)
+function observe(obj){
+  if(!obj||typeof obj !== 'object'){//如果不是对象就不需要继续了
+    return 
+  }
+  Object.keys(obj).forEach(item=>{//循环 并重写
+    defineReactive(obj,item,obj[item])
+  })
+}
 
+function defineReactive(obj,key,val){//重写方法
+   observe(val)//如果有自属性就会执行自属性重写
+   Object.defineProperty(obj,key,{
+       enumerable:true,
+       configurable:false,
+       get(){
+         return val
+       },
+       set(newVal){
+         console.log('改变了')
+         val = newVal
+       }
+   })
+}
 
 /********************************************************************************/
 //判断Array的6种办法

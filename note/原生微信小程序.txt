@@ -1,0 +1,65 @@
+终端上操作
+ffmpeg -i http://aisylive.oss/xxxxxxx/xxxx/180209c001_3.m3u8  output.mp4
+导出m3u8成mp4
+
+小程序循环：
+  <view class='shopBox' wx:for='{{con}}' wx:key='{{index}}' wx:for-index="index" wx:for-item="con">
+    <view class='shopImg'>
+      <image src='{{con.image1}}' />
+    </view>
+  </view>
+  wx:key  和vue类似 需要给一个key值 一般把index给key
+  wx:for-index 重新定义循环的KEY  默认是index
+  wx:for-item  重新定义循环的VALUE  默认是item
+
+小程序绑定事件传递参数；
+这个和vue有些区别  小程序不能直接在事件里把参数带走  需要在节点上做一个绑定存储
+<view wx:for="{{list}}"  wx:key="{{index}}" bindtap="pageTo" data-index="{{index}}"> 
+//把数据存储在 一个新绑定的prop: data-index 上
+....
+</view>
+js:
+pageTo(e){//通过e属性找回自己的节点 读取节点上的绑定数据
+    var index = e.currentTarget.dataset['index'];
+    console.log(index)
+}
+
+小程序样式不能直接用本地图片做背景图，
+只支持：1.线上地址的图片
+       2.base64 格式的图片
+       3.用<image>标签引入  用样式定位的方式来解决
+
+跳转页面  
+  页面上用<navigator url="/pages/b/b?id=1&tu='a.jpg' " hover-class="none"> //?后面是带的参数
+
+  代码跳转 wx.navigateTo({//?后面是带的参数
+			    url: '/pages/b/b?id=' + 1 + "&tu=" + 'a.jpg'
+			  });
+接收页面处理：
+onLoad: function (options) {       //options用于接收上个页面传递过来的参数
+  var that = this;
+  that.setData({                             //this.setData的方法用于把传递过来的id转化成小程序模板语言
+		 b_id: options.id,     //id是a页面传递过来的名称，a_id是保存在本页面的全局变量   {{b_id}}方法使用
+		 b_tu: options.tu,
+	  })
+ }
+
+https://starapplet.ee.cagoe.com/images/Chinese/star8txt0.png
+https://starapplet.ee.cagoe.com/images/star/star6.png
+
+https://starapplet.ee.cagoe.com/media/Chinese/video18/index.m3u8
+
+
+https://starapplet.ee.cagoe.com/media/Chinese/video6/000.ts
+
+
+
+
+
+
+
+
+
+
+
+
