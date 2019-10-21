@@ -1,3 +1,242 @@
+闭包：
+函数执行的一瞬间叫闭包，当执行后返回的结果必须是引用数据类型，被外界变量接收，此时函数不会被销毁
+一个典型的闭包
+let a = function(b){ 
+     return function(c){
+        return b+c
+     } 
+}
+/////////////////////////
+类数组
+伪数组也叫类数组就是一个对象，但是跟数组一样，伪数组也会有length属性，也有0，1，2，3等属性
+伪数组并没有数组的方法，不能使用push/pop等数组方法
+伪数组可以和数组一样进行遍历
+常见的伪数组：arguments、document.querySelectorAll的返回值、jquery对象
+
+创建一个伪数组：
+var obj = {
+  0:"小黄",
+  1:"小白",
+  2:"小花",
+  length:3
+};
+如果要用数组方法操作伪数组需要用call或者apply改变this到伪数组上操作
+[].push.call(obj,"大黑")
+//////////////////////
+改变this指向：
+1.apply,call 
+2.bind 
+3.箭头函数 ()=>{} 箭头函数自身没有this 用的是外层的this
+
+call，apply 借用 修改this的指向
+call,apply作用：
+1.调用函数
+function fn(){
+  console.log(123)
+}
+fn.call();//123
+fn.apply();//123
+2.传递参数
+function sum(x,y){
+  console.log(x+y)
+}
+sum.call(null,2,3)//5
+sum.apply(null,[2,3])//5
+3.修改this指向
+var obj = {
+  name:"huwei",
+  age:22
+}
+function sum(x,y){
+  console.log(x+y);
+  console.log(this.name);
+  console.log(this.age);
+}
+sum(2,3)//5, ,undefined  函数直接执行时this指向window window.name是一个空值  window.age不存在undefined
+sum.call(obj,2,3)//5,huwei,22  call把sum的this指向了obj sum里其他的逻辑还是原来的；
+4.借用对象方法
+var obj = {
+  0:"大黄",
+  1:"小白",
+  length:2,
+};//一个伪数组
+
+[].push.call(obj,"小花");//借用了Array上的push方法
+console.log(obj) //{0: "大黄", 1: "小白", 2: "小花", length: 3}
+
+总结：call,apply 处理函数时，可以调用函数，向函数传递参数，改变函数this的指向；
+     call,apply 处理对象object的时候，可以借用对象上的方法 把对象上的方法借给其他对象来使用
+     call和apply用法基本一致，区别只在于call是把每个参数一个一个传入，apply是传入数组或伪数组
+                参数不多的时候用call，参数多的时候用apply
+///////////////////////////////////
+bind是创建一个新的函数，可以绑定新的函数this指向，不会来调用函数
+    常用来处理函数的this改变 
+var fn = function(){
+  console.log(this)
+}
+var fn2 = fn.bind([1,2,3])
+console.log(fn2)//ƒ (){console.log(this)}
+console.log(fn===fn2)//false  虽然fn和fn2长得一样 但是他们的引用指向是不一样的，所以是不同的函数
+fn2()//[1,2,3]  bind把函数的this指向了数组[1,2,3]
+
+改变setTimeout 里的this指向
+var obj = {
+  name:'huwei',
+  age:12,
+  hi:function(){
+    setTimeout(function(){
+      console.log(this.name)
+    }.bind(this),1000)
+  }
+}
+obj.hi()
+/***************************************/
+es6新关键字
+yield
+使生成器函数执行暂停，yield关键字后面的表达式的值返回给生成器的调用者。它可以被认为是一个基于生成器的版本的return关键字。
+yield关键字实际返回一个IteratorResult（迭代器）对象，它有两个属性，value和done，分别代表返回值和是否完成。
+yield无法单独工作，需要配合generator(生成器)的其他函数，如next，懒汉式操作，展现强大的主动控制特性。
+
+next()驱动生成的函数，yield会让循环停在yield的地方 得到这个yield后面的值 输出成一个对象{'value':xx,'done':xx}
+只有当函数内部不再有yield时 done才会显示true 表示执行完成  如果在继续next()驱动  也可以输出 {'value':undefined,done:true}
+next(XX)驱动里赋值  时赋给了整个yield  不是函数的参数  
+
+例子：
+function* test(x){//function后要跟一个星号
+  var y = 2*(yield(x+1))
+  var z = yield(y/3)
+  console.log('x:'+x,'y:'+y,'z:'+z)
+  return (x+y+z)
+}
+var app = test(5);
+console.log(app.next())//第一次停在yield(x+1) 所以结果是{value: 6, done: false}
+console.log(app.next(12))//第二次next传入一个值  这个值替代 上一次yield整个的值  那么y=2*12=24 
+                         //然后停在了yield(y/3)这里  所以输出{value:8,done:false}
+console.log(app.next(13))//第三次next传入的值  替代 yield(y/3)  所以z=13 ,前面得到y = 24, x=5
+                         //x+y+z = 5+24+13 = 42 return出42
+
+/***************************************/
+Promise.all和Promise.race
+一、Pomise.all的使用
+Promise.all可以将多个Promise实例包装成一个新的Promise实例。同时，成功和失败的返回值是不同的，成功的时候返回的是一个结果数组，而失败的时候则返回最先被reject失败状态的值。
+let p1 = new Promise((resolve, reject) => {
+  resolve('成功了')
+})
+
+let p2 = new Promise((resolve, reject) => {
+  resolve('success')
+})
+
+let p3 = Promse.reject('失败')
+
+Promise.all([p1, p2]).then((result) => {
+  console.log(result)               //['成功了', 'success']
+}).catch((error) => {
+  console.log(error)
+})
+
+Promise.all([p1,p3,p2]).then((result) => {
+  console.log(result)
+}).catch((error) => {
+  console.log(error)      // 失败了，打出 '失败'
+})
+Promse.all在处理多个异步处理时非常有用，比如说一个页面上需要等两个或多个ajax的数据回来以后才正常显示，在此之前只显示loading图标。
+
+Promse.race就是赛跑的意思，意思就是说，Promise.race([p1, p2, p3])里面哪个结果获得的快，就返回那个结果，不管结果本身是成功状态还是失败状态。
+let p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('success')
+  },1000)
+})
+
+let p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    reject('failed')
+  }, 500)
+})
+
+Promise.race([p1, p2]).then((result) => {
+  console.log(result)
+}).catch((error) => {
+  console.log(error)  // 打开的是 'failed'
+})
+/***************************************/
+[1, 2, 3].map(num => {  
+  if (typeof num === "number") return;  
+  return num * 2; 
+});//[undefined,undefined,undefined]
+map映射循环时 如果返回时空 默认是undefined
+/***************************************/
+class Dog { 
+  constructor(name) { 
+    this.name = name; 
+  } 
+} 
+Dog.prototype.bark = function() { 
+  console.log(`Woof I am ${this.name}`);  
+};  
+const pet = new Dog("Mara");  
+pet.bark(); //Woof I am Mara
+delete Dog.prototype.bark;  
+pet.bark(); //TypeError
+我们可以用 delete关键字删除对象的属性，对原型也是适用的。删除了原型的属性后，该属性在原型链上就不可用了
+delete操作符返回一个布尔值：true指删除成功，否则返回 false. 
+但是通过 var, const 或 let 关键字声明的变量无法用 delete 操作符来删除。
+
+/***************************************/
+Set(注意大些首字母)
+Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没有重复的值。
+/***************************************/
+const settings = {  
+  username: "lydiahallie",  
+  level: 19,  
+  health: 90  
+};  
+const data = JSON.stringify(settings, ["level", "health"]); 
+console.log(data);//"{"level":19, "health":90}"
+JSON.stringify的第二个参数是 替代者(replacer). 替代者(replacer)可以是个函数或数组，用以控制哪些值如何被转换为字符串。
+/**************************************/
+let num = 10; 
+const increaseNumber = () => num++; 
+const increasePassedNumber = number => number++;  
+const num1 = increaseNumber();  
+const num2 = increasePassedNumber(num1);  
+console.log(num1);//10
+console.log(num2);//10
+一元操作符 ++ 先返回 操作值, 再累加 操作值。
+
+/************************************/
+const name = "Lydia Hallie" 
+console.log(name.padStart(13))  
+console.log(name.padStart(2))
+使用 padStart方法，我们可以在字符串的开头添加填充。传递给此方法的参数是字符串的总长度（包含填充）。字符串 LydiaHallie的长度为 12, 因此 name.padStart（13）在字符串的开头只会插入1（ 13-12=1）个空格。
+
+如果传递给 padStart方法的参数小于字符串的长度，则不会添加填充。
+/**********************************/
+console.log(String.raw`Hello\nworld`);
+String.raw函数是用来获取一个模板字符串的原始字符串的，它返回一个字符串，其中忽略了转义符（ \n， \v， \t等）。但反斜杠可能造成问题，因为你可能会
+/**********************************/
+async function getData() {  
+  return await Promise.resolve("I made it!"); 
+} 
+const data = getData(); 
+console.log(data);
+异步函数始终返回一个promise。 await仍然需要等待promise的解决：当我们调用 getData()并将其赋值给 data，此时 data为 getData方法返回的一个挂起的promise，该promise并没有解决。
+如果我们想要访问已解决的值 "I made it!"，可以在 data上使用 .then()方法：
+data.then(res=>console.log(res))
+这样将打印 "I made it!"
+/********************************/
+function addToList(item, list) {  
+  return list.push(item); 
+} 
+const result = addToList("apple", ["banana"]);  
+console.log(result);//2
+push()方法返回新数组的长度。一开始，数组包含一个元素（字符串 "banana"），长度为1。 在数组中添加字符串 "apple"后，长度变为2，并将从 addToList函数返回。
+push方法修改原始数组，如果你想从函数返回数组而不是数组长度，那么应该在push item之后返回 list。
+/*******************************/
+使用 &&运算符，如果左侧值是真值，则返回右侧值。在这种情况下，左侧值 []是一个真值，所以返回 Im。
+使用 ||运算符，我们可以返回第一个真值。如果所有值都是假值，则返回最后一个值。
+
 *面向对象的继承方式
 
 //1.原型链继承 用父类的实例来继承
@@ -281,6 +520,7 @@ ES6 中，箭头函数就是函数的一种简写形式，使用括号包裹参�
 1不需要 function 关键字来创建函数 x=>{alert(x)}  ====> function(x){alert(x)}
 2省略 return 关键字  x=>x+1   ====>  function(x){return x+1}
 3继承当前上下文的 this 关键字 自己没有this 会去上一层找this  解决一些回调中this指向了window的问题 例如setTimeout
+4箭头函数没有prototype属性，返回undefined
 /***********************************************************************************************/
 //函数的参数默认值
 // ES6之前，当未传入参数时，text = 'default'；
@@ -368,6 +608,7 @@ Object.defineProperty(obj,'name',{
 })
 //劫持写入（set） 读取（get） vue实现的基础 这样就可以知道对象什么时候插入了新数据  什么时候调用了数据，
 这就是双向绑定的基础
+defineProperty方法给对象添加了一个属性之后，属性默认为 不可枚举(not enumerable). 
 var obj = {}
 Object.defineProperty(obj,'name',{
      set(newval){//传入新赋的值

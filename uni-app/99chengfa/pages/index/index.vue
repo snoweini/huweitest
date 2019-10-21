@@ -57,9 +57,9 @@
 			return {
 				numberIndex: [ {
 						key: 0,
-						isSelected: !1,
-						src: "./static/img/one.png",
-						seleSrc: "./static/img/one_sele.png"
+						isSelected: !0,
+						seleSrc: "./static/img/one.png",
+						src: "./static/img/one_sele.png"
 					}, {
 						key: 1,
 						isSelected: !1,

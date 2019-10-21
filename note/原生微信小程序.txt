@@ -44,6 +44,116 @@ onLoad: function (options) {       //options用于接收上个页面传递过来
 	  })
  }
 
+/////// 微信组件 component
+类似vue的组件component
+1.创建
+和普通页面一样，组件也可以创建四个文件。
+4个文件中的js文件
+//component.js
+Component({
+  lifetimes: {//组件的生命周期
+     attached: function() {
+      // 在组件实例进入页面节点树时执行
+    },
+    detached: function() {
+      // 在组件实例被从页面节点树移除时执行
+    },
+    created(){}  在组件实例刚刚被创建时执行
+    attached(){}  无 在组件实例进入页面节点树时执行 1.6.3
+    ready(){} 在组件在视图层布局完成后执行  1.6.3
+    moved(){} 在组件实例被移动到节点树另一个位置时执行  1.6.3
+    detached(){} 在组件实例被从页面节点树移除时执行 1.6.3
+    error (Object Error){}  每当组件方法抛出错误时执行 2.4.1
+
+  },
+  properties: {//接收prop传过来的值
+     testxt:{//父级prop名称
+       type:'string',  传递的数据类型
+       value:'aaa'   默认值
+     }
+  },
+  data: {//组件私有数据
+     txt:"ccccc"
+  },
+  methods: {//组件上的方法
+    ontap(){ ... }
+  }，
+  pageLifetimes: {
+    // 组件所在页面的生命周期函数
+    show: function () { },
+    hide: function () { },
+    resize: function () { },
+  },
+
+2.引入
+home.json
+父组件的json文件中引入组件
+"usingComponents":{
+     "home-item":"../components/home-item/home-item"
+}
+和vue一样 组件里也可以引入其他组件
+3.调用
+home.wxml
+<!-- 首页列表 -->
+  <view class='join-layout'>
+    <block wx:for="{{joinDatas}}" wx:for-item="joinItem">
+      <!-- 这里是引入的组件名称 -->
+      <home-item id="homeItem"
+           <!--绑定子组件发出的事件-->
+           bind:signEvent="signEvent" 
+           coverUrl='{{joinItem.dakaPic}}'
+           activityTitle='{{joinItem.dakaName}}'
+           signTimeRange='{{joinItem.dakaTimeRange}}'
+           organizerStatus='{{organizerStatus}}'
+           signTimes='{{joinItem.dakaNum}}'
+           signStatus='{{joinItem.status}}'>
+    </home-item>
+  </block>
+  </view>
+
+4.父子组件之间的通信
+和vue类似  父传子 用prop  子传父 this.triggerEvent('自定义函数名'，{'key':'传递的数据'})
+
+/*******************/
+请求接口
+wx.request({
+  url: 'test.php', //仅为示例，并非真实的接口地址
+  data: {
+    x: '',
+    y: ''
+  },
+  header: {
+    'content-type': 'application/json' // 默认值
+  },
+  success (res) {
+    console.log(res.data)
+  }
+})
+/*****************/
+本地存储
+存
+wx.setStorage({
+  key:"key",
+  data:"value"
+})
+读取
+wx.getStorage({
+  key: 'key',
+  success (res) {
+    console.log(res.data)
+  }
+})
+删除
+wx.removeStorage({
+  key: 'key',
+  success (res) {
+    console.log(res)
+  }
+})
+清除全部
+wx.clearStorage()
+
+
 https://starapplet.ee.cagoe.com/images/Chinese/star8txt0.png
 https://starapplet.ee.cagoe.com/images/star/star6.png
 
@@ -54,9 +164,32 @@ https://starapplet.ee.cagoe.com/media/Chinese/video6/000.ts
 
 
 
-http://zipai1.sepapa.top:9999/10224946/hls/index.m3u8
-http://zipai1.sepapa.top:9999/10177277/hls/index.m3u8
-http://zipai1.sepapa.top:9999/10180296/hls/index.m3u8
+
+
+
+
+
+
+
+
+
+
+
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1110/hls/index.m3u8  ??404
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1132/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1138/hls/index.m3u8
+
+
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1149/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1102/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1098/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1101/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1153/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1172/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1169/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1186/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1183/hls/index.m3u8
+http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1188/hls/index.m3u8
 
 
 
