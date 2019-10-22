@@ -180,6 +180,15 @@ http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1132/hls/index.m3u8
 http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1138/hls/index.m3u8
 
 
+
+
+
+
+
+
+http://zipai1.sepapa.top:9999/10223808/hls/index.m3u8
+
+
 http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1149/hls/index.m3u8
 http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1102/hls/index.m3u8
 http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1098/hls/index.m3u8

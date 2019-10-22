@@ -1,3 +1,204 @@
+Node.js 是一个 Javascript 运行环境(runtime)它让 Java Script 可以开发后端程序，实现几乎其他后端语言实现的所有功能，
+ 可以与 PHP、JSP、Python、Ruby 等后端语言平起平坐。
+Nodejs 是基于 V8 引擎，V8 是 Google 发布的开源 JavaScript 引擎，本身就是用于 Chrome 浏览器 的 JS 解释部分，但是 Ryan Dahl 这哥们，鬼才般的，把这个 V8 搬到了服务器上，用于做服务器的软件。
+/********************************************************/
+//http 模块
+HTTP 模块的使用
+ 
+//引用模块
+var http = require("http");
+//创建一个服务器，回调函数表示接收到请求之后做的事情
+var server = http.createServer(function(req,res){ //req 参数表示请求，res 表示响应
+    console.log("服务器接收到了请求" + req.url);
+    res.w riteHead(200,{"Content-Type":"text/htm l;charset=UTF8"});
+    res.end(); // End 方法使 Web 服务器停止处理脚本并返回当前结果
+});
+//监听端口
+server.listen(3000,"127.0.0.1");
+/********************************************************/
+URL模块
+var url = require('url')
+1. url.parse() 解析 URL
+2. url.format(urlObject) //是上面 url.parse() 操作的逆向操作
+3. url.resolve(from, to) //添加或者替换地址 拼接from to的参数组成一个新的路径地址
+
+var {query} = url.parse('http://...',true)//传入true后 解析出来的对象里 query对应的值是一个object对象形式，不然是字符串；
+/********************************************************/
+fs模块
+var fs = require('fs');
+1. fs.stat 检测是文件还是目录
+    fs.stat('hello.js', (error, stats) =>{ if (error){
+        console .log(error) } else {
+        console .log(stats)
+        console .log(`文件: ${stats.isFile()}` )
+        console .log(`目录: ${stats.isDirectory()}` ) }
+    })
+2. fs.mkdir 创建目录
+    fs.mkdir('logs', (error) => { if (error){
+        console .log(error) } else {
+        console .log('成功创 建目录:logs' )
+    } })
+3. fs.writeFile 创建写入文件
+   fs.writeFile('logs/hello.log', '您好 ~ \n', (error) => {
+        if(error) {
+        console .log(error)
+        } else {
+        console .log('成功写 入文件' )
+        } 
+    })
+4. fs.appendFile 追加文件
+   fs.appendFile('logs/hello.log', 'hello ~ \n', (error) => { 
+       if(error) {
+            console .log(error) 
+        } else {
+            console .log('成功写 入文件' ) 
+        }
+    })
+5.fs.readFile 读取文件
+    fs.readFile('logs/hello.log', 'utf8', (error, data) =>{ 
+      if (error) {
+        console .log(error) 
+      } else {
+        console .log(data) 
+      }
+    })
+6.fs.readdir 读取目录
+  fs.readdir('logs', (error, files) => { 
+      if (error) {
+          console .log(error)
+      } else {
+          console .log(files)
+      } 
+  })
+7.fs.rename 重命名
+  fs.rename('js/hello.log', 'js/greeting.log', (error) =>{
+    if (error) {
+       console .log(error)
+    } else {
+       console .log(' 重命名成功' )
+    } 
+  })
+8. fs.rmdir 删除目录
+    fs.rmdir('logs', (error) =>{
+      if (error) {
+        console .log(error)
+      } else { 
+        console.log('成功的删除了目录:logs')
+      } 
+    })
+9. fs.unlink 删除文件
+    fs.unlink(`logs/${file}`, (error) => {
+     if (error) {
+        console .log(error) 
+      } else {
+        console.log(`成功的删除了文件: ${file}`) 
+      }
+    })
+10. fs.createReadStream 从文件流中读取数据
+    const fs = require('fs')
+    var fileReadStream = fs.createReadStream('data.json')
+    let count=0; var str='';
+    fileReadStream.on('data', (chunk) => {
+      console.log(`${ ++count } 接收到:${chunk.length}`);
+      str +=chunk 
+    })
+    fileReadStream.on('end', () => { 
+      console.log('--- 结束 ---'); 
+      console .log(coun t );
+      console .log(str ); 
+    })
+    fileReadStream.on('error', (error) => { 
+      console .log(error)
+    })
+11. fs.createWriteStream 写入文件
+    var fs = require("fs");
+    var data = '我是从数据库获取的数据，我要保存起来';
+    // 创建一个可以写入的流，写入到文件 output.txt 中
+    var writerStream = fs.createWriteStream('output.txt'); // 使用 utf8 编码写入数据
+    writerStream .write(data ,'UTF8' ); // 标记文件末尾
+    writerStream .end();
+    // 处理流事件 --> finish 事件
+    writerStream.on('finish', function() { 
+      /*finish - 所有数据已被写入到底层系统时触发。*/ 
+      console .log("写入完 成。" );
+    });
+    writerStream.on('error', function(err){
+      console.log(err.stack); 
+    });
+    console .log("程序执 行完毕" );
+12. 管道流
+    var fs = require("fs");
+    // 创建一个可读流
+    var readerStream = fs.createReadStream('input.txt'); // 创建一个可写流
+    var writerStream = fs.createWriteStream('output.txt');
+    // 管道读写操作
+    // 读取 input.txt 文件内容，并将内容写入到 output.txt 文件中 readerStre am .pipe(writerStream );
+    console .log("程 序执行完毕" );
+/********************************************************/
+supervisor 会不停的 watch 你应用下面的所有文件，发现有文件被修改，就重新载入程序文件这样就实现了部署，修
+改了程序文件后马上就能看到变更后的结果。麻麻再也不用担心我的重启 nodejs 了!
+npm install -g supervisor
+/********************************************************/
+CommonJS 就是模块化的标准，nodejs 就是 CommonJS(模块化)的实现
+模块的导出
+// 定义一个 tools.js 的模块 //模块定义
+var tools = {
+sayHello: function() { return 'hello NodeJS';
+},
+add: function(x, y) { return x + y;
+} };
+// 模块接口的暴露
+// module.exports = tools; //建议用这种
+exports.sayHello = tools.sayHello;  //exports容易产生指向不一致问题
+exports.add = tools.add;
+
+导出使用
+// 引入自定义的 tools.js 模块
+var tools= require('./tools');  //通过npm和node自带的不需要写具体路径引用
+                               //自定义的模块引入需要写相对路径
+tools.sa yHello(); //使用模块
+/********************************************************/
+package.json 定义了这个项目所需要的各种模块,以及项目的配置信息(比如名称、版本、许可证等元数据)
+npm init 生成 package.json
+package.json 作用是记录管理npm安装信息，所以同步代码时可以不同步node_modules文件夹（里面都是安装插件）
+只需要同步package.json  就可以  其他开发者通过npm run server node会自动安装所需插件
+
+npm init --yes  /  npm init -y  默认对话都是yes
+
+dependencies 与 devDependencies 之间的区别?
+使用 npm install node_module –save 自动更新 dependencies 字段值;
+使用 npm install node_module –save-dev 自动更新 devDependencies 字段值;
+dependencie  // 打包的正式环境也会使用
+devDependencie // 只在开发环境使用
+测试 和文档框架
+npm install babel-cli --save-dev //只在开发环境使用
+
+http://www.npmjs.org npm 包官网
+https://npm.taobao.org/ 淘宝 npm 镜像官网
+安装淘宝镜像
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+建议安装nrm管理各种镜像
+/*******************/
+NPM 命令详解。
+1.npm -v 查看 npm 版本
+2.使用 npm 命令安装模块
+  npm install
+  安装 jq 模块:
+   如
+  Module Name
+  npm install jquery
+3.npm uninstall moudleName 卸载模块
+  npm uninstallModuleName
+4.npm list 查看当前目录下已安装的 node 包
+  npm list
+5.npm info jquery 查看 jquery 的版本
+  npm info 模块 //查看模块的版本
+6.指定版本安装 npm install jquery@1.8.0
+/********************************************************/
+/********************************************************/
+/********************************************************/
+/********************************************************/
+/********************************************************/
 node api
 
 *FS模块
