@@ -161,7 +161,7 @@ tools.sa yHello(); //使用模块
 package.json 定义了这个项目所需要的各种模块,以及项目的配置信息(比如名称、版本、许可证等元数据)
 npm init 生成 package.json
 package.json 作用是记录管理npm安装信息，所以同步代码时可以不同步node_modules文件夹（里面都是安装插件）
-只需要同步package.json  就可以  其他开发者通过npm run server node会自动安装所需插件
+只需要同步package.json  就可以  其他开发者通过npm install   node会自动安装所需插件
 
 npm init --yes  /  npm init -y  默认对话都是yes
 

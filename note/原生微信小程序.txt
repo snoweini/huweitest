@@ -152,7 +152,47 @@ wx.removeStorage({
 })
 清除全部
 wx.clearStorage()
-
+/************************/
+微信登录
+1.用微信方法wx.login 读取用户的code信息
+2.读取到code信息后  再请求后端提供的登录接口 把code传给后端作为登录凭证
+wx.login({
+  success(res){
+     if(res.code){
+        //请求后端的登录接口
+        wx.request({
+          url:'test.com/login'，//后端提供的登录接口
+          data:{
+            code:res.code //把code传给后台作为登录的凭证
+          }
+        })
+     }
+  }
+})
+/**********************/
+微信授权
+要使用到一些设计用户隐私的功能时 需要进行授权操作；
+// 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
+wx.getSetting({
+  success(res) {
+    if (!res.authSetting['scope.record']) {//如果不存在表示没有授权过
+      wx.authorize({
+        scope: 'scope.record',
+        success () {
+          // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
+          wx.startRecord()//调取录音功能
+        }
+      })
+    }
+  }
+})
+/*******************/
+获取用户信息
+wx.getUserInfo({
+    success(res){
+      console.log(res)
+    }
+})
 
 https://starapplet.ee.cagoe.com/images/Chinese/star8txt0.png
 https://starapplet.ee.cagoe.com/images/star/star6.png
@@ -175,9 +215,7 @@ https://starapplet.ee.cagoe.com/media/Chinese/video6/000.ts
 
 
 
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1110/hls/index.m3u8  ??404
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1132/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1138/hls/index.m3u8
+账号：15101135905      密码：abc123
 
 
 
