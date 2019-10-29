@@ -264,6 +264,24 @@ Array.from(null)//报错
 Array.from(NaN)//[]
 Array.from(false)/Array.from(true) //[]
 Array.from('foo')//['f','o','o']
+/******************************/
+Symbol
+es6新的数据类型
+var s = Symbol()
+var s2 = Symbol()
+console.log(s===s2)//false  不会重复
+var age_sy = Symbol()
+var obj = {"name":"huwei",[s]:11} //可以作为object的key
+obj[age_sy] = 12;//object的key
+console.log(obj) //{name: "huwei", Symbol(): 11, Symbol(): 12}
+console.log(Object.keys(obj))//Symbol定义的key value 不会被 Object.keys() 或 for in  for of 获取
+console.log(obj[s])//11
+var str = JSON.stringify(obj); 
+console.log(str)//{"name":"huwei"}
+console.log(Object.getOwnPropertySymbols(obj))//可以被自带的getOwnPorpertySymbols方法获取
+应用环境：
+可以让对象有私有的属性  不会被外界循环 ，也可以定义一个变量保证他不会重复
+
 /*****************************/
 set
 Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没有重复的值。
@@ -271,11 +289,27 @@ Set是ES6新的数据结构，类似数组，但成员的值是唯一的，没�
  (2）接收一个数组用来初始化 去除数组的重复成员
  注意，在Set内部，两个NaN相等，所以会去除重复的NaN，但是 === 是认为两个 NaN是不等的（NaN===NaN 结果是false）。
  add() //增
+ set.add('huwei')
 delete() //删
+set.delete(1)//删除值是1的项
 has() //是否存在
+set.has(2)//判断存不存在值为2的项  返回一个布尔值
 
 用for of 循环  用Array.from(set)转化成数组   也可以用展开 [...set]
-
+。。。。。。。。。。。。。。。。。
+map
+新的数据结构与set类似 map传入参数是一个多维的数组
+var maps = new Map([["name","huwei"]])
+set//增加
+maps.set("age",18)
+get//获取
+maps.get("name")
+delete//删除
+maps.delete("name")
+for of循环遍历
+for (var val of maps){
+  console.log(Object.prototype.toString.call(val));//得到是数组类型 ["name","huwei"]
+}
 /*******************************/
 关于隐式转换
 会自动转化的

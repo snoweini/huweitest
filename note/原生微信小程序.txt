@@ -218,8 +218,11 @@ https://starapplet.ee.cagoe.com/media/Chinese/video6/000.ts
 账号：15101135905      密码：abc123
 
 
+http://youngtest.chinaso.com/v1/user/hlnum/headline/getGoodAt
 
+http://appapitest.chinaso.com/young/v2/user/hyhaomanage/headline/getcity
 
+http://appapitest.chinaso.com/young/v2/user/hyhaomanage/headline/getGoodAt
 
 
 
@@ -240,8 +243,8 @@ http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1188/hls/index.m3u8
 
 
 
-
-
-
+https://vod.se0282.com//20190331/34f8eab7/index.m3u8
+https://vod.se0282.com//20190331/ea3ab4c2/index.m3u8
+https://vod.se0282.com//20190331/c8cd48d4/index.m3u8
 
 

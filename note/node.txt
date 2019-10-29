@@ -10,7 +10,7 @@ var http = require("http");
 //创建一个服务器，回调函数表示接收到请求之后做的事情
 var server = http.createServer(function(req,res){ //req 参数表示请求，res 表示响应
     console.log("服务器接收到了请求" + req.url);
-    res.w riteHead(200,{"Content-Type":"text/htm l;charset=UTF8"});
+    res.writeHead(200,{"Content-Type":"text/htm l;charset=UTF8"});
     res.end(); // End 方法使 Web 服务器停止处理脚本并返回当前结果
 });
 //监听端口
@@ -27,23 +27,27 @@ var {query} = url.parse('http://...',true)//传入true后 解析出来的对象�
 fs模块
 var fs = require('fs');
 1. fs.stat 检测是文件还是目录
-    fs.stat('hello.js', (error, stats) =>{ if (error){
-        console .log(error) } else {
-        console .log(stats)
-        console .log(`文件: ${stats.isFile()}` )
-        console .log(`目录: ${stats.isDirectory()}` ) }
+    fs.stat('hello.js', (error, stats) =>{ 
+        if (error){
+            console .log(error) 
+        } else {
+            console .log(stats)
+            console .log(`文件: ${stats.isFile()}` )
+            console .log(`目录: ${stats.isDirectory()}` ) 
+        }
     })
 2. fs.mkdir 创建目录
-    fs.mkdir('logs', (error) => { if (error){
+    fs.mkdir('logs', (error) => { 
+      if (error){
         console .log(error) } else {
         console .log('成功创 建目录:logs' )
     } })
-3. fs.writeFile 创建写入文件
+3. fs.writeFile 创建写入文件 没有文件会创建这个文件
    fs.writeFile('logs/hello.log', '您好 ~ \n', (error) => {
         if(error) {
-        console .log(error)
+          console .log(error)
         } else {
-        console .log('成功写 入文件' )
+          console .log('成功写 入文件' )
         } 
     })
 4. fs.appendFile 追加文件
