@@ -1,0 +1,47 @@
+安装react
+npm install create-react-app -g
+
+创建项目
+create-react-app 项目名
+
+脚手架生成的内容
+
+[node_modules] 所有依赖的文件都在这里  
+     .bin本地项目中可执行命令，在package.json的scripts中配置 对应的脚本即可
+     react-scripts命令
+
+[public] 存放当前项目的html  单页面应用只放一个index.html即可 多页面根据自己需求放置需求页面
+	在react框架中 所有的逻辑都是在js中完成（包括页面创建）如果想给当前的页面导入样式或img图片等内容，我们有两种方式
+	1.在js中基于es6语法  Module 使用import导入，webpack编译时会把导入的资源文件插入到页面里。（绝对不能在js管控的结构中
+	用相对路径./  ../导入 因为在webpack编译的时候不再是之前的相对地址）
+	2.如果不想在js中导入（js中导入的最后都会基于webpack打包），可以把资源手动的在html中导入，但是html最后也会基于html编译
+	导入地址不建议写相对地址 %PUBLIC_URL%写成绝对地址
+[src] 主要目录  后期的js 路由 组件 包括需要编写的css或者图片 都放这里
+    index.js是当前项目 主入口文件
+
+.gitignore  git提交时忽略的文件
+
+package.json  当前项目的配置清单
+    "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-scripts": "3.2.0"
+  }脚手架自动安装了三个模块
+  react-scripts  集成了webpack需要的配置
+     Babel一套
+     css处理一套
+     eslint一套
+     webpack一套
+   没有less  sass处理
+
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },可执行脚本
+
+
+React 和 React-dom
+[渐进式框架]
+
