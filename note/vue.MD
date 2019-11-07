@@ -40,7 +40,12 @@ module.exports = {
   ]
 }
 
-
+全家桶：vue-cli 脚手架
+       vue2.0 主要框架
+       vue-router 路由管理
+       vuex 数据状态管理
+       axios 跨域请求
+       element-ui/vant ui  ui组件库
 ############# 创建项目 #############
 npm 安装 vue
 npm install -g vue-cli
@@ -674,3 +679,119 @@ router.beforeEach((to,from,next)=>{//from 离开的路由  to 进入的路由  n
 写错了会造成不停的路由跳转
 ################################### vue双向绑定原理 ##################################
 每当被问到Vue数据双向绑定原理的时候，大家可能都会脱口而出：Vue内部通过Object.defineProperty方法属性拦截的方式，把data对象里每个数据的读写转化成getter/setter，当数据变化时通知视图更新。一句话把大概原理概括了
+/****************** keep-alive 缓存*************************/
+keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染。
+用法也很简单：
+<keep-alive>
+  <component>
+    <!-- 该组件将被缓存！ -->
+  </component>
+</keep-alive>
+props
+include - 字符串或正则表达，只有匹配的组件会被缓存
+exclude - 字符串或正则表达式，任何匹配的组件都不会被缓存
+<keep-alive include="a">
+  <component>
+    <!-- name 为 a 的组件将被缓存！ -->
+  </component>
+</keep-alive>可以保留它的状态或避免重新渲染
+<keep-alive exclude="a">
+  <component>
+    <!-- 除了 name 为 a 的组件都将被缓存！ -->
+  </component>
+</keep-alive>可以保留它的状态或避免重新渲染
+实际项目中
+router-view 也是一个组件，如果直接被包在 keep-alive 里面，所有路径匹配到的视图组件都会被缓存：
+<keep-alive>
+    <router-view>
+        <!-- 所有路径匹配到的视图组件都会被缓存！ -->
+    </router-view>
+</keep-alive>
+如果只想 router-view 里面某个组件被缓存，怎么办？
+增加 router.meta 属性
+// routes 配置
+export default [
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+    meta: {
+      keepAlive: true // 需要被缓存
+    }
+  }, {
+    path: '/:id',
+    name: 'edit',
+    component: Edit,
+    meta: {
+      keepAlive: false // 不需要被缓存
+    }
+  }
+]
+<keep-alive>
+    <router-view v-if="$route.meta.keepAlive">
+        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+    </router-view>
+</keep-alive>
+/**************************************************/
+以下方法调用不会改变原始数组
+filter(), consat(), slice() 他们返回的是一个新数组，使用这些方法时，可以用新数组来替换原始数组
+
+
+以下方法调用会改变原始数组
+push(), pop(), shift(), unshift(), splice(), sort(), reverse()
+直接修改数组元素是无法触发视图更新的，如
+
+this.array[0] = {
+    name: 'meng',
+    age: 22
+}
+修改array的length也无法触发视图更新，如
+
+this.array.length = 2;
+触发视图更新的方法有如下几种
+
+1. Vue.set
+可以设置对象或数组的值，通过key或数组索引，可以触发视图更新
+2. Vue.delete
+
+删除对象或数组中元素，通过key或数组索引，可以触发视图更新
+3. 数组对象直接修改属性，可以触发视图更新
+3. 数组对象直接修改属性，可以触发视图更新
+
+this.array[0].show = true;
+this.array.forEach(function(item){
+    item.show = true;
+});
+4. splice方法修改数组，可以触发视图更新
+
+this.array.splice(indexOfItem, 1, newElement)
+5. 数组整体修改，可以触发视图更新
+
+var tempArray = this.array;
+tempArray[0].show = true;
+this.array = tempArray;
+6. 用Object.assign或lodash.assign可以为对象添加响应式属性，可以触发视图更新
+
+复制代码
+//Object.assign的单层的覆盖前面的属性，不会递归的合并属性
+this.obj = Object.assign({},this.obj,{a:1, b:2})
+
+//assign与Object.assign一样
+this.obj = _.assign({},this.obj,{a:1, b:2})
+
+//merge会递归的合并属性
+this.obj = _.merge({},this.obj,{a:1, b:2})
+复制代码
+7.Vue提供了如下的数组的变异方法，可以触发视图更新
+
+复制代码
+push()
+pop()
+shift()
+unshift()
+splice()  
+sort()
+reverse()
+
+
+
