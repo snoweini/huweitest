@@ -45,7 +45,7 @@ module.exports = {
        vue-router 路由管理
        vuex 数据状态管理
        axios 跨域请求
-       element-ui/vant ui  ui组件库
+       element-ui/vant ui  ui组件库 
 ############# 创建项目 #############
 npm 安装 vue
 npm install -g vue-cli
@@ -792,6 +792,135 @@ unshift()
 splice()  
 sort()
 reverse()
+
+/**********************  vuex 总结  **********************/
+一.引入vuex 
+   1.npm install vuex 安装vuex包
+   2.在src开发目录下新建 vuex文件夹  新建index.js 写vuex数据；
+   import Vue from 'vue'
+   import Vuex from 'vuex'
+   Vue.use(Vuex)
+   export default new Vuex.Store({
+                       state:{
+                          num:1
+                        },
+                        getters:{//编辑state
+                          cnum(state){
+                            return state.num + '个'
+                           }
+                        },
+                        mutations:{//处理同步
+                           add(state){
+                             state.num += 1
+                           },
+                           frink(state){
+                              state.num -= 1
+                           }
+                        },
+                        actions:{//处理异步
+                          actNum({commit}){
+                             setTimeout(()=>{
+                                commit('frink')
+                             },1000)
+                          }
+                        }
+                  
+                   })
+    3.在入口main.js文件里引用
+      import store from './vuex'
+      new Vue({
+        el:"#app",
+        router,
+        store,
+        components: { App },
+        template: '<App/>'
+      })
+这样就可以在项目里使用vuex了
+   4.项目页面使用
+   template //建议template里使用的命名和vuex里state,getters,mutations,actions里用的一样，方便使用map方法
+     <div class="hello" >
+      <div>{{num}}</div>
+      <div @click="addNum">add</div>
+      <div @click="actNum">frink</div>
+     </div>
+   js:
+     import {mapState,mapGetters,mapMutations,mapActions} from 'vuex' //引用map方法
+     
+     computed:{
+      //state mapState 2种使用
+       1. ...mapState(['num']) //数组
+       2. ...mapState({ //json
+                        num : 'num'
+                      })
+      state直接普通引用
+      return this.$store.getters.changeNum
+     },
+
+   methods:{
+    //mapMutations和mapActions只接收数组
+    //返回的是一个object {} 对象，所以需要用展开... 混入多个
+    ...mapMutations(['addNum']),
+    ...mapActions(['actNum']),
+
+    普通引用
+      addNum(){ 
+         this.$store.commit('addNum')  //同步用commit 提交触发
+       },
+      actNum(){
+         this.$store.dispatch('actNum')  //异步用dispatch触发
+      }
+/********************* vue-router **************************/
+vue路由实现的基本原理：  SPA —— 单页应用
+1.hash模式：
+  http://www.xxx.com/#/login
+  这种 #。后面 hash 值的变化，不会向后端提交请求，同时还会触发hashchange 这个事件，利用这样的特性，就是实现改变路径页面不刷新
+  然后js监听到后 改造页面dom。
+
+2.h5的history模式：
+  因为HTML5标准发布。多了两个 API，pushState 和 replaceState，通过这两个 API 可以改变 url 地址且不会发送请求。同时还有popstate 事件。通过这些就能用另一种方式来实现前端路由了，但原理都是跟 hash 实现相同的。用了 HTML5 的实现，单页路由的 url 就不会多出一个#，变得更加美观。但因为没有 # 号，所以当用户刷新页面之类的操作时，浏览器还是会给服务器发送请求。为了避免出现这种情况，所以这个实现需要服务器的支持，需要把所有路由都重定向到根页面。
+
+/****************** axios **********************/
+Axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。
+从浏览器中创建 XMLHttpRequests
+从 node.js 创建 http 请求
+支持 Promise API
+拦截请求和响应
+转换请求数据和响应数据
+取消请求
+自动转换 JSON 数据
+客户端支持防御 XSRF
+
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    return response;
+  }, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
+/*********************** mvvm 框架 ***************************/
+vm层（视图模型层）通过接口从后台m层（model层）请求数据，vm层继而和v（view层）实现数据的双向绑定。
+mvc和mvvm的关系？
+改进版
+数据分离
+视图模型层
+c（控制层）被换成了vm（viewmodel）层
+MVVM是Model-View-ViewModel的简写。它本质上就是MVC 的改进版。
+mvvm层实现了前后端更好的分离（前端需要的数据只需要请求后端的接口即可）
+
+数据监听： ng用的是 脏检查  事件时 watcher会对比整个树的结构来判断是否需要重绘dom  缺点性能损耗
+         vue用的是 Object.defineProperty() 添加setter getter来劫持，通过发布订阅模式 来监听数据的变化
+
+
 
 
 
