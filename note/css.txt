@@ -120,16 +120,7 @@ infinite:重复无数次
 alternate:到终点后再从终点运动会起点
 第一个时间是动画持续时间   第二个时间是延迟开始动画的时间
 
-@keyframes 规则和所有动画属性
-@keyframes 规定动画
-animation 所有动画属性的简写属性，除 animation-play-state
-animation-name @keyframes 动画名称
-animation-duration 动画完成一个周期所花秒或毫秒数。默认是 0
-animation-timing-function 动画的速度曲线。默认是 "ease"
-animation-delay 动画延迟多久开始。默认是 0
-animation-iteration-count 规定动画被播放的次数。默认是 1
-animation-direction 规定动画是否在下一周期逆向地播放。默认是 "normal"
-animation-play-state 规定动画是否正在运行或暂停。默认是 "running"。
+
 
 forwards 只执行一次然后停在动画最后的属性值
 
@@ -139,8 +130,58 @@ div
 {
 transition: width 1s linear 2s;
 }
+background:
+   多重背景图片：background-image属性
+        background 在css3可以引入多个background-image
+        background:
+          url(....) top left,
+          url(....) top right,
+          linear-gradient(to bottom,blue,red)
 
+    背景图片区域：background-clip属性
+        background-clip: border-box;    // 背景被裁剪到边框
+        background-clip: padding-box;   // 背景被裁剪到内边距
+        background-clip: content-box;   // 背景被裁剪到内容框
 
+    背景图片大小：background-size属性
+        background-size: contain;      // 将背景图片等比例缩放至某一边紧贴容器边缘为止
+        background-size: cover;        // 将背景图片等比例缩放以填满整个容器
+        background-size: 800px 500px;  // 背景图片的宽度是800px，高度是500px
+        background-size: 800px;        // 相当于800px auto，背景图片的宽度是800px，高度等比例缩放
+        background-size: 50% 50%;      // 背景图片的宽度/高度都是容器的50%
+        background-size: 50%;          // 相当于50% auto，背景图片的宽度是容器宽度的50%，高度等比例缩放
+        background-size: 100% 100%;    // 背景图片的宽度/高度都是容器的100%
+        background-size: 100%;         // 相当于100% auto，背景图片的宽度是容器宽度的100%，高度等比例缩放
+    背景属性整合：background属性
+        概念：在一个声明中设置所有的背景属性
+        语法：background:color position size repeat origin clip attachment image
+        background: #abcdef center 50% no-repeat content-box content-box fixed url('bg1.jpg');
+
+        // 经验之谈，还是建议以这种形式来写
+        background: #abcdef url('bg1.jpg') no-repeat center center;
+        background-size: 50%;
+        background-origin: content-box;
+        background-clip: content-box;
+        background-attachment: fixed;
+    CSS3渐变
+        渐变(gradients)可以在两个或多个指定的颜色之间显示平稳的过渡。
+
+        线性渐变：linear Gradients属性
+        background: linear-gradient(direction, color-stop1,color-stop2,...)
+
+        径向渐变：linear Gradients属性
+        概念：从起点到终点颜色从内向外进行圆形渐变(从中间向外拉)
+        语法：radial-gradient(center, shape size, start-color , ... , last-color);
+        // 设置形状
+        // radial-gradient(shape, start-color , ... , last-color);
+        // circle：圆形，ellipse：椭圆（默认）
+/*****************************************************/
+
+移动端优化总结：
+   1.尽量用css3 tranform里的属性来做动画， 不要用定位left, top。
+   2.渐变用css3的 linear-gradient 来处理，不要用切图平铺
+   3.icon图标 可以用font-icon图标代替
+   4.引用资源文件都打包成一个文件,减少请求次数
 
 /**************************************** 兼容问题汇总 ********************************************/
 1.改变盒子模型：
