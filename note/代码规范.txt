@@ -200,6 +200,12 @@ if else else前后留有空格
 
 多个if else 条件判断  应该用 switch case 
 
+vue
+使用 Promise 避免 回调陷阱
+使用 vuex 管理 复杂的 组件数据传递
+编译代码时 保证eslint检测能通过
+可以缓存的页面 建议用keep-alive做缓存 提高性能
+利用本地存储localStorage 来存储一些 接口无法即时刷新返回新数据 的问题
 
 
 
