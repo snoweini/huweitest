@@ -591,7 +591,7 @@ for (var val of maps){
 /*******************************/
 关于隐式转换
 会自动转化的
-1. 转成string类型： +（字符串连接符） object[](对象的key)
+1. 转成string类型： +（字符串连接符） object[](对象的key) 会自动用toString()转成string
 2.转成number类型：++/--(自增自减运算符) + - * / %(算术运算符) > < >= <= == !=  
 3. 转成boolean类型：!（逻辑非运算符）
 
@@ -1274,7 +1274,7 @@ CSRF（Cross-site request forgery）跨站请求伪造，也被称为“One Clic
 
 
 
-
+a
 
 
 
