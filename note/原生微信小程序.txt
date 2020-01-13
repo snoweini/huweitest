@@ -194,53 +194,78 @@ wx.getUserInfo({
     }
 })
 
-https://starapplet.ee.cagoe.com/images/Chinese/star8txt0.png
-https://starapplet.ee.cagoe.com/images/star/star6.png
-
-https://starapplet.ee.cagoe.com/media/Chinese/video18/index.m3u8
 
 
-https://starapplet.ee.cagoe.com/media/Chinese/video6/000.ts
+1100000133234
+ 
+ 
+app.js文件中有3个生命周期函数：onLaunch、onShow、onHide（还有一个onError，程序出现错误时触发）
+page.js文件中有5个生命周期函数：onLoad、onReady、onShow、onHide、onUnload。
+一个完整的小程序执行的生命周期：
+app.onLaunch -> app.onShow -> page1.onLoad -> page1.onShow -> page1.onReady
+(打开程序第一个page1页面加载完成)
+-> page1.onHide -> page2.onLoad -> page2.onShow -> page2.onReady
+(从第一个页面新打开page2)
+-> page2.onUnload -> page1.onShow ->...->page1.onUnload
+(关闭page2,返回page1...退出小程序)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-账号：15101135905      密码：abc123
-songying@chinaso.com/chinaso2018 iview账号别外传
-
-
-http://youngtest.chinaso.com/v1/user/hlnum/headline/getGoodAt
-
-http://appapitest.chinaso.com/young/v2/user/hyhaomanage/headline/getcity
-
-http://appapitest.chinaso.com/young/v2/user/hyhaomanage/headline/getGoodAt
+一个page的生命周期从onLoad开始，整个生命周期内onLoad、onReady、onUnload这三个时间仅执行一次，而onHide和onShow在每次页面隐藏和显示时都会触发。当用户手动触发左上角的退出箭头时，小程序仅触发app.onHide，下次进入小程序时会触发app.onShow以及当前page.onShow.仅当小程序在后台运行超过一定时间未被唤起、或者用户手动在小程序的控制栏里点击退出程序、或者小程序内存占用过大被关闭时，小程序将被销毁，会触发page.onUnload事件。
+每个小程序分为2个线程，view与appServer。其中view线程负责解析渲染页面（wxml和wxss），而appServer线程负责运行js。由于js不跑在web-view里，就不能直接操纵DOM和BOM，这就是小程序没有window全局变量的原因。
+ 
+ 
+ 可以看到 setData函数是 
+1. 将数据从逻辑层发送到视图层是异步 
+2. 改变this.data是同步的 
+也就是说改变值是同步的,改变值之后渲染页面是异步的, 
+应该是为了提高性能,不可能改变一次数据渲染一次页面,等所有data改变完之后一块渲染页面. 
+ 
 
 
 
 
-http://zipai1.sepapa.top:9999/10223808/hls/index.m3u8
 
 
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1149/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1102/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1098/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1101/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1153/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1172/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1169/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1186/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1183/hls/index.m3u8
-http://wuma1.sepapa.top:9999/twwuma/tokyo-hot-n1188/hls/index.m3u8
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://localhost:8080/v2/user/hyhaomanage/headline/submit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
