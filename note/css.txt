@@ -314,7 +314,7 @@ html, body, form, fieldset, p, div, h1, h2, h3, h4, h5, h6 {-webkit-text-size-ad
    document.body.addEventListener('touchmove', function (e) {
         e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
     }, {
-        passive: false
+        passive: false 
     });
    //passive 参数不能省略，用来兼容ios和android
    //如果设置了passive为true，同时又阻止默认行为，阻止是不生效的

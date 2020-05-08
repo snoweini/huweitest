@@ -925,7 +925,7 @@ mvvm层实现了前后端更好的分离（前端需要的数据只需要请求�
 数据监听： ng用的是 脏检查  事件时 watcher会对比整个树的结构来判断是否需要重绘dom  缺点性能损耗
          vue用的是 Object.defineProperty() 添加setter getter来劫持，通过发布订阅模式 来监听数据的变化
 
-
+路由懒加载  路由钩子  less与scss区别  是否可以if写样式
 
 
 
