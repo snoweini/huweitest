@@ -87,18 +87,76 @@ export default {
 }
 </script>
 
+/****************** vue中父子组件的生命周期 **********************/
+父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载。
+父 beforeCreate -> created -> 子 beforeCreate -> created -> beforeMount -> mounted -> 父 beforeMount -> mounted
+Vue父子组件生命周期钩子的执行顺序遵循：从外到内，然后再从内到外，不管嵌套几层深，也遵循这个规律。
 
+/***************** 组件 v-if 和 v-show 切换时生命周期钩子的执行 ******************/
+v-if
+初始渲染
+初始值为 false 组件不会渲染，生命周期钩子不会执行，v-if 的渲染是惰性的。
+初始值为 true 时，组件会进行渲染，并依次执行 beforeCreate,created,beforeMount,mounted 钩子。
+切换
+false => true
+依次执行 beforeCreate,created,beforeMount,mounted 钩子。
+true => false
+依次执行 beforeDestroy,destroyed 钩子。
 
+v-show
+渲染
+无论初始状态，组件都会渲染，依次执行 beforeCreate,created,beforeMount,mounted 钩子，v-show 的渲染是非惰性的。
+切换
+对生命周期钩子无影响，切换时组件始终保持在 mounted 钩子。
 
+/****************** vue路由实现原理 *************************/
+大型单页应用最显著特点之一就是采用的前端路由系统，通过改变URL，在不重新请求页面的情况下，更新页面视图。
+目前在浏览器环境中这一功能的实现主要有2种方式：
+1.利用URL中的hash("#");
+2.利用History interface在HTML5中新增的方法;
+mode 参数：
+　　　　1.默认 hash
+　　　　2. history。如果浏览器不支持 history 新特性，则采用 hash
+　　　　3. 如果不在浏览器环境下，就采用 abstract（Node环境下）
+在vue里
+在初始化对应的history之前，会对mode做一些校验：若浏览器不支持HTML5History方式(通过supportsPushState变量判断)，则mode设为hash;若不是在浏览器环境下运行，则mode设为abstract;
+VueRouter类中的onReady(),push()等方法只是一个代理，实际是调用的具体history对象的对应方法，在init()方法中初始化时，也是根据history对象具体的类别执行不同操作
 
+HashHistory
+hash("#")符号的本来作用是加在URL指示网页中的位置：
+#本身以及它后面的字符称之为hash可通过window.location.hash属性读取.
+hash虽然出现在url中，但不会被包括在http请求中，它是用来指导浏览器动作的，对服务器端完全无用，因此，改变hash不会重新加载页面。
+可以为hash的改变添加监听事件：
+window.addEventListener("hashchange",funcRef,false)
+每一次改变 hash(window.localtion.hash)，都会在浏览器访问历史中增加一个记录。
+HashHistory 拥有两个方法，一个是 push， 一个是 replace
+两个方法：HashHistory.push() 和 HashHistory.replace()
+HashHistory.push()  将新路由添加到浏览器访问历史的栈顶
 
+HashHistory.replace()
+replace()方法与push()方法不同之处在于，它并不是将新路由添加到浏览器访问历史的栈顶，而是替换掉当前的路由
 
+HTML5History
+History interface 是浏览器历史记录栈提供的接口，通过back()、forward()、go()等方法，我们可以读取浏览器历史记录栈的信息，进行各种跳转操作。
+从 HTML5开始，History interface 提供了2个新的方法：pushState()、replaceState() 使得我们可以对浏览器历史记录栈进行修改：
+window.history.pushState(stateObject,title,url)
+window.history,replaceState(stateObject,title,url)
+这2个方法有个共同的特点：当调用他们修改浏览器历史栈后，虽然当前url改变了，但浏览器不会立即发送请求该url，这就为单页应用前端路由，更新视图但不重新请求页面提供了基础
+1.push
+与hash模式类似，只是将window.hash改为history.pushState
+2.replace
+与hash模式类似，只是将window.replace改为history.replaceState
+3.监听地址变化
+在HTML5History的构造函数中监听popState（window.onpopstate）
 
-
-
-
-
-
+两种模式比较
+一般的需求场景中，hash模式与history模式是差不多的，根据MDN的介绍，调用history.pushState()相比于直接修改hash主要有以下优势：
+pushState设置的新url可以是与当前url同源的任意url,而hash只可修改#后面的部分，故只可设置与当前同文档的url
+pushState设置的新url可以与当前url一模一样，这样也会把记录添加到栈中，而hash设置的新值必须与原来不一样才会触发记录添加到栈中
+pushState通过stateObject可以添加任意类型的数据记录中，而hash只可添加短字符串
+pushState可额外设置title属性供后续使用
+缺点
+history模式则会将URL修改得就和正常请求后端的URL一样,如后端没有配置对应/user/id的路由处理，则会返回404错误
 
 
 
