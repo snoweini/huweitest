@@ -158,7 +158,22 @@ pushState可额外设置title属性供后续使用
 缺点
 history模式则会将URL修改得就和正常请求后端的URL一样,如后端没有配置对应/user/id的路由处理，则会返回404错误
 
+/////////////$.extend 和 $.fn.extend 区别///////////////////////
+jQuery为开发插件提拱了两个方法，分别是：
 
+jQuery.fn.extend();
+jQuery.fn.extend = jQuery.prototype.extend
+你可以拓展一个对象到jQuery的 prototype里去，这样的话就是插件机制了。
+对jQuery.prototype进得扩展，就是为jQuery类添加“成员函数”。jQuery类的实例可以使用这个“成员函数”。
+
+jQuery.extend(object)
+为jQuery类添加类方法，可以理解为添加静态方法。如：
+jQuery.extend({
+min: function(a, b) { return a < b ? a : b; },
+max: function(a, b) { return a > b ? a : b; }
+});
+jQuery.min(2,3); //  2 
+jQuery.max(4,5); //  5
 
 
 
