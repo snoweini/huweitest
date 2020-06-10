@@ -933,4 +933,8 @@ npm install -g vue-cli
 vue -V    //注：V是大写字母V
 cmd利用cd指令进入到保存项目的文件夹下，然后输入命令
 vue init webpack
-
+/********* git ************/
+git add .
+git commit -m ''
+git pull
+git push
