@@ -158,23 +158,13 @@ pushState可额外设置title属性供后续使用
 缺点
 history模式则会将URL修改得就和正常请求后端的URL一样,如后端没有配置对应/user/id的路由处理，则会返回404错误
 
-/////////////$.extend 和 $.fn.extend 区别///////////////////////
-jQuery为开发插件提拱了两个方法，分别是：
-
-jQuery.fn.extend();
-jQuery.fn.extend = jQuery.prototype.extend
-你可以拓展一个对象到jQuery的 prototype里去，这样的话就是插件机制了。
-对jQuery.prototype进得扩展，就是为jQuery类添加“成员函数”。jQuery类的实例可以使用这个“成员函数”。
-
-jQuery.extend(object)
-为jQuery类添加类方法，可以理解为添加静态方法。如：
-jQuery.extend({
-min: function(a, b) { return a < b ? a : b; },
-max: function(a, b) { return a > b ? a : b; }
-});
-jQuery.min(2,3); //  2 
-jQuery.max(4,5); //  5
+/************************ Vue底层实现原理概述 ******************************/
+vue数据双向绑定是通过数据劫持结合发布者-订阅者模式的方式来实现的
+核心是通过Obeject.defineProperty()来监听数据的变动，这个函数内部可以定义setter和getter，每当数据发生变化，就会触发setter。这时候Observer就要通知订阅者，订阅者就是Watcher。
 
 
-
-
+npm install -g vue-cli
+查看vue版本号
+vue -V    //注：V是大写字母V
+cmd利用cd指令进入到保存项目的文件夹下，然后输入命令
+vue init webpack

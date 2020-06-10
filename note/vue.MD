@@ -927,5 +927,10 @@ mvvm层实现了前后端更好的分离（前端需要的数据只需要请求�
 
 路由懒加载  路由钩子  less与scss区别  是否可以if写样式
 
-
+/************ vue-cli 初始化***************/
+npm install -g vue-cli
+查看vue版本号
+vue -V    //注：V是大写字母V
+cmd利用cd指令进入到保存项目的文件夹下，然后输入命令
+vue init webpack
 
