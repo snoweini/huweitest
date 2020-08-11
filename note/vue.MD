@@ -1,4 +1,8 @@
-18613887545    8700
+18613887545    
+
+18186168611
+
+5211
 #################webpack 笔记#######################
 //cd对应文件夹  然后
 npm init -y  //就是yes的意思，在init的时候省去了敲回车的步骤，生成的默认的package.json
@@ -681,6 +685,14 @@ router.beforeEach((to,from,next)=>{//from 离开的路由  to 进入的路由  n
 也就是说beforeEach()必须调用next(),否则就会出现无限循环，next() 和 next('xxx') 是不一样的，
 区别就是前者不会再次调用router.beforeEach()，后者会！！！
 写错了会造成不停的路由跳转
+1.全局路由守卫：beforeEach, beforeResolve, afterEach
+beforeEach, beforeResolve 都需要next, afterEach不需要next操作
+
+2.路由独享：beforeEnter
+可直接定义在路由配置上，和beforeEach方法参数、用法相同
+
+3.组件内：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave
+
 ################################### vue双向绑定原理 ##################################
 每当被问到Vue数据双向绑定原理的时候，大家可能都会脱口而出：Vue内部通过Object.defineProperty方法属性拦截的方式，把data对象里每个数据的读写转化成getter/setter，当数据变化时通知视图更新。一句话把大概原理概括了
 /****************** keep-alive 缓存*************************/
@@ -873,6 +885,61 @@ reverse()
       actNum(){
          this.$store.dispatch('actNum')  //异步用dispatch触发
       }
+
+vuex namespaced 命名空 私有化 配合 modules 引入不同的模块化仓库
+总文件里
+import pub from './pub.js'
+import huwei from './huwei.js'
+export default new vuex.Store({
+  modules: {
+    pub,
+    huwei
+  }
+})
+pub.js里
+const state = {
+  num: 1
+}
+const mutations = {
+  change (state, n) {
+    state.num = state.num + n
+  }
+}
+const actions = {
+  add ({commit}, state) {
+    commit('change', state)
+  }
+}
+////注意：这里的this 指向的是 总文件 不是当前的pub  所以用this.state是找不到的 返回undefind
+export default {
+  namespaced: true, //强调私有化    这样调用的时候必须指定路径是私有的  不然 mutations 和 actions都是在总文件全局里
+  state,
+  mutations,
+  actions
+}
+组件里调用  map 和 普通调用对比
+...
+computed: {
+    ...mapState('pub', {num: 'num'})
+    // num () {
+    //   return this.$store.state.pub.num
+    // }
+  },
+  methods: {
+    ...mapMutations('pub', {change: 'change'}),
+    ...mapActions('pub', {add: 'add'}),
+    handleClick () {
+      // this.$store.commit('pub/change', 5)
+      this.change(5)
+    },
+    handle () {
+      setTimeout(() => {
+        this.add(3)
+        // this.$store.dispatch('pub/add', 3)
+      }, 1000)
+    }
+  }
+...
 /********************* vue-router **************************/
 vue路由实现的基本原理：  SPA —— 单页应用
 1.hash模式：
@@ -938,3 +1005,8 @@ git add .
 git commit -m ''
 git pull
 git push
+
+
+
+
+

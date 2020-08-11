@@ -168,3 +168,57 @@ npm install -g vue-cli
 vue -V    //注：V是大写字母V
 cmd利用cd指令进入到保存项目的文件夹下，然后输入命令
 vue init webpack
+
+
+从浏览器地址栏输入url到显示页面的步骤
+浏览器根据请求的URL交给DNS域名解析，找到真实IP，向服务器发起请求；
+服务器交给后台处理完成后返回数据，浏览器接收文件（HTML、JS、CSS、图象等）；
+浏览器对加载到的资源（HTML、JS、CSS等）进行语法解析，建立相应的内部数据结构（如HTML的DOM）；
+载入解析到的资源文件，渲染页面，完成。
+
+HTTP状态码及其含义
+1XX：信息状态码
+100 Continue 继续，一般在发送post请求时，已发送了http header之后服务端将返回此信息，表示确认，之后发送具体参数信息
+2XX：成功状态码
+200 OK 正常返回信息
+201 Created 请求成功并且服务器创建了新的资源
+202 Accepted 服务器已接受请求，但尚未处理
+3XX：重定向
+301 Moved Permanently 请求的网页已永久移动到新位置。
+302 Found 临时性重定向。
+303 See Other 临时性重定向，且总是使用 GET 请求新的 URI。
+304 Not Modified 自从上次请求后，请求的网页未修改过。
+4XX：客户端错误
+400 Bad Request 服务器无法理解请求的格式，客户端不应当尝试再次使用相同的内容发起请求。
+401 Unauthorized 请求未授权。
+403 Forbidden 禁止访问。
+404 Not Found 找不到如何与 URI 相匹配的资源。
+5XX: 服务器错误
+500 Internal Server Error 最常见的服务器端错误。
+503 Service Unavailable 服务器端暂时无法处理请求（可能是过载或维护）。
+
+淘宝适配方案flexible.js
+引入淘宝的js文件，通过js实现根据屏幕大小动态修改 根标签 html 的字体大小,当html标签的fontsize被修改时，页面中使用了rem单位的css会自动发生变化
+flexible.js 把 屏幕宽度分10rem 如：
+当屏幕宽度为 640px 时， html 的字体大小为 64px，也就是10rem。
+1 rem = 64px；
+1px = 1rem / 64rem
+
+小程序生命周期
+app.js
+onLaunch 生命周期函数--监听小程序初始化 当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
+onShow 生命周期函数--监听小程序显示 当小程序启动，或从后台进入前台显示，会触发 onShow
+onHide 生命周期函数--监听小程序隐藏 当小程序从前台进入后台，会触发 onHide
+onError 错误监听函数 当小程序发生脚本错误，或者 api 调用失败时，会触发 onError 并带上错误信息
+
+在page页面中定义的生命周期方法
+onLoad 生命周期函数--监听页面加载
+onReady 生命周期函数--监听页面初次渲染完成
+onShow 生命周期函数--监听页面显示
+onHide 生命周期函数--监听页面隐藏
+onUnload 生命周期函数--监听页面卸载
+
+如何快速判断JS闭包
+闭包一定具有嵌套函数
+内层函数一定操作了外层函数的局部变量
+外层函数将内层函数返回外部，需要一个变量接住（全局变量）

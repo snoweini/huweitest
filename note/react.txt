@@ -1,32 +1,182 @@
-安装react
-npm install create-react-app -g
+第一课：
+react脚手架
+具备自己开发的独立思想（mvc：Model View Controller）
+  -> 划分组件开发
+  -> 基于路由的SPA单页面开发
+  -> 基于ES6来编写代码（最后上线时，我们需要把ES6编译成ES5=>基于Babel来完成编译）
+  -> 可能用到Less/Sass等，我们也需要使用对应插件把他们也编译
+  -> 最后为了优化性能（减少HTTP请求次数），把js css进行合并压缩
+  ->...
+  webpack来完成以上组件合并，js/css编译压缩
 
-创建项目
-create-react-app 项目名
+  前端工程化开发：
+   ->基于框架的组件化/模块化开发
+   ->基于webpack的自动部署
 
-脚手架生成的内容
+  但是配置webpack是一个相对复杂的工作，我们需要自己安装很多的包
+  还需要自己写相对复杂的配置
+  如果我们有一个插件，基于它可以快速构建一套完整的自动化工程项目结构
+  那么有助于提高开发效率，=>“脚手架“
+     VUE:VUE-CLI
+     REACT:CREATE-REACT-APP
 
-[node_modules] 所有依赖的文件都在这里  
-     .bin本地项目中可执行命令，在package.json的scripts中配置 对应的脚本即可
-     react-scripts命令
+第二课：
+【create-react-app 的使用】
+  > $ npm install create-react-app -g
+    把模块安装在全局环境下（目的： 可以使用命令操作）
+    mac电脑安装需要加sudo 否则没有权限
+  
+  > $ create-react-app [项目名称]
+    基于脚手架命令，创建出一个基于react的自动化/工程化项目目录
+    和npm发包规则一样，项目名称不能出现：大写字母、中文汉字、特殊符号
+    （-或者_是可以的）等
 
-[public] 存放当前项目的html  单页面应用只放一个index.html即可 多页面根据自己需求放置需求页面
-	在react框架中 所有的逻辑都是在js中完成（包括页面创建）如果想给当前的页面导入样式或img图片等内容，我们有两种方式
-	1.在js中基于es6语法  Module 使用import导入，webpack编译时会把导入的资源文件插入到页面里。（绝对不能在js管控的结构中
-	用相对路径./  ../导入 因为在webpack编译的时候不再是之前的相对地址）
-	2.如果不想在js中导入（js中导入的最后都会基于webpack打包），可以把资源手动的在html中导入，但是html最后也会基于html编译
-	导入地址不建议写相对地址 %PUBLIC_URL%写成绝对地址
-[src] 主要目录  后期的js 路由 组件 包括需要编写的css或者图片 都放这里
-    index.js是当前项目 主入口文件
+【脚手架生产目录的一些内容】
+    node_modules 当前项目中依赖的包都安装在这里
+       .bin  本地项目中可执行命令， 在package.json的scripgts中
+       配置对应的脚本即可(其中有一个就是 react-scripts命令)
 
-.gitignore  git提交时忽略的文件
+    public  存放当前项目的html页面（单页面应用放一个index.html即可，多页面
+    根据自己需求放置需要的页面）
+    在React框架中，所有的逻辑都是在js中完成的（包括页面结构的创建）
+    如果想给当前页面导入一些css样式或者img图片等内容，我们有两种方式
+       1.在js中基于es6 Module模块规范，使用import导入这样webpack合并
+       时会把导入的资源文件等插入到页面的结构中（绝对不能在js管控的结构中
+       通过相对目录./或者../导入资源,因为在webpack编译的时候，地址就不再是
+       之前的相对地址)
+       2.如果不想在js导入（js导入资源会基于webpack编译）资源手动在html里导入
+       但是html最后也要基于webpack编译，导入地址也不建议写相对地址，二十使用
+       %PUBLIC_URL%写成绝对地址
 
-package.json  当前项目的配置清单
-    "dependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
-  }脚手架自动安装了三个模块
+    src  项目结构中最主要的目录，因为后期所有的js、路由、组件都是放在这里。
+    包括需要编写的css或者图片等
+        index.js是当前项目入口文件
+
+        .gitignore  Git提交时忽略文件
+
+        package.json 当前项目配置清单
+          "dependencies": {
+            "react": "^16.13.1",
+            "react-dom": "^16.13.1",
+            "react-scripts": "3.4.1"
+          },
+        自动帮我们安装了 react/react-dom/react-scripts
+           react-scripts集成了webpack需要的内容
+               ->Babel 一套
+               ->css处理 一套
+               ->eslint 一套
+               ->webpack 一套
+               ->其他
+            没有less/sass的处理内容（项目中使用less，我们需要自己额外安装)
+
+
+        ---------
+        "scripts": {
+          "start": "react-scripts start",
+          "build": "react-scripts build",
+          "test": "react-scripts test",
+          "eject": "react-scripts eject"
+        },
+        可执行脚本“$ npm run start / $ yarn start"
+            start: 开发环境下， 基于webpack编译处理，最后可以预览当前开发项目
+            （在webpack中安装了dev-server插件，基于这个插件会自动创建一个服务【端口号
+            默认是3000】，webpack会帮我们自动打开浏览器，并且展示我们的页面，能监听我们的代码
+            改变，如果改变了，webpack会自动重新编译，并且刷新浏览器来重新渲染）
+
+            build：项目需要部署到服务器上，我们先用build把项目整体打包，完成后会在
+            项目中生成一个build文件夹，这个文件夹中包含了所有编译的内容，我们把它上传到服务器
+            即可。服务器上进行部署的时候，不需要安装任何模块了（因为webpack已经把需要的
+            的内容都打包到一个js里了） 
+ 
+ 第三课
+
+2.React脚手架的深入解析
+  create-react-app脚手架为了让结构目录清晰，把安装的webpack及配置文件集成
+  react-scripts模块中，放到了node_modules中
+
+  但是真实项目中，我们需要在脚手架默认安装的基础上，额外安装一些我们需要的
+  模块，例如：react-router-dom/axios...  再比如less/less-loader...
+  
+    情况1：如果我们安装其他组件，但是安装成功后不需要修改webpack配置项
+          此时我们直接安装，并且调取使用即可
+
+    情况2: 我们安装的插件是基于webpack处理的，也就是需要把安装的模块webpack中
+    重新修改webpack配置项
+         =>首先需要把隐藏的node_modules中的配置项暴露到项目中
+           >yarn eject
+           首先会提示是否执行eject操作，操作不可逆，暴露就无法隐藏了
+
+           如果当前的项目基于git管理，在执行eject的时候，如果还没有
+           提交历史区的内容，需要先提交历史区，然后才可以eject 否则报错
+
+         =>再去修改对应的配置项即可
+           一旦暴露后，项目目录多了两个文件夹：
+           config 存放的是webpack的配置文件 
+              webpack.config.dev.js 开发环境配置项   yarn start
+              webpack.config.prod.js  生产环境下的配置  yarn build
+           scripts 存放的是可执行脚本的js文件
+              start.js  yarn start 执行的就是这个js
+              build.js  yarn build 执行的就是这个js
+
+          package.json 中的文件也改变了
+
+          举个例子：配置需要的less
+            $ yarn add less less-loader
+
+            less是开发和生产环境下都需要的
+            ...
+            {
+               test: /\.(css|less)$/,
+               use:{
+                 require.resolve('style-loader'),
+                 ...
+                 {
+                   loader: require.resolve('less-loader')
+                 }
+               }
+            }
+            ...
+            
+
+
+
+    我们预览项目的时候，也是先基于webpack编译，把编译后的内容放到浏览器中运行
+    所以如果项目中使用了less，我们需要修改webpack配置，在配置中加入less编译
+    工作这样后期预览项目，首先基于webpack把less编译为css 然后
+    再呈现到页面中
+
+
+    $ set HTTPS=true&&npm start  切换成https协议模式预览
+    设置环境变量HTTPS的值
+
+    $ set PORT=63341&&yarn start  修改端口号
+    //process.env.PORT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
   react-scripts  集成了webpack需要的配置
      Babel一套
      css处理一套
