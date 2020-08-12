@@ -153,6 +153,97 @@ react脚手架
     //process.env.PORT
 
 
+第四课
+React & react-dom
+  
+  【渐进式框架】
+     一种最流行的框架设计思想，一般框架中都包含很多内容，这样导致
+     框架的体积过于臃肿，拖慢加载速度。真是中使用框架不一定使用所有
+     功能，此时我们应该把框架的功能拆分，用户想用什么，让其自由组合即可
+
+     全家桶：渐进式框架n多部分的组合
+     vue全家桶：vue-cli/vue/vue-router/vuex/axios(fetch)/elementui(vant)
+     REACT全家桶: create-react-app/react/react-dom/react-router/redux
+                /react-redux/axios/ant/dva/saga/mobx...
+
+       1.react: REACT框架的核心部分，提供了Component类供我们进行组件开发
+          提供了钩子函数（生命周期函数：所有的生命周期函数都是基于回调函数完成）
+
+       2.react-dom：把jsx语法（REACT独有语法）渲染为真实dom（能够放到页面中展示的
+       结构都叫做真实dom）的组件
+
+       ReactDOM.render({jsx},{container},{callback}) //把jsx元素渲染到页面中
+        jsx:react虚拟元素
+        container 容器 我们把元素放到页面中的哪个容器中
+        callback  当内容放到页面后触发回调函数
+
+        JSX:REACT独有的语法  JAVASCRIPT + XML(HTML)
+            和我们之前自己拼接的html字符串类似，都是把html结构代码和
+            js代码混合在一起，但是它不是字符串
+
+          1.不建议我们把jsx直接渲染到body中，而是放在自己创建的一个容器中
+            一般我们都放在一个id为root的div中
+
+          2.在jsx中出现{}是存放js的，js代码执行完成有返回结果（js表达式）
+            ->不能直接放一个对象数据类型的值（对象（除了给style赋值）、数组（数组如果都是基本值是可以的或者是jsx元素也可以）、函数都不行）
+            ->可以是基本类型值（布尔类型不显示也不报错、null,undefined
+            代表空）
+            ->循环判断的语句都不支持，但是支持三元运算符（？ ：）
+
+          3.循环数组创建jsx元素（一般基于数组的map方法完成），需要给创建的元素设置唯一的key值（当前循环内唯一即可）
+
+          4.只能出现一个根元素
+
+          5.给元素设置样式类用的是className不是class
+
+          6.style中不能直接写样式字符串，需要基于一个样式对象来遍历赋值
+
+          let data = "yuki"
+ReactDOM.render(<div>hello,world {data}</div>,document.getElementById('root'));
+
+======================================
+第六课
+把jsx（虚拟dom）变成真实dom
+import ReactDOM, {render} from 'react-dom';
+//从react-dom导入一个ReactDOM，逗号后面的内容是把ReactDOM这个对象进行解构
+<=>import {render} from 'react-dom';
+
+   jsx渲染机制
+      1.基于BABEL中的语法解析模块(BABEL-PRESET-REACT)把jsx语法
+      编译为React.createElement(...)结构
+网址：https://babeljs.io/repl
+          React.createElement("h1", {
+            id: "titleBox",
+            className: "title",
+            style: {
+              color: 'red'
+            }
+          }, "\u6211\u662F\u6807\u9898");
+      
+      2.执行React.createElement(type, props, children),创建一个对象（虚拟dom）
+         type: 'h1'
+         props:{
+           id:'titleBox'
+           className:'title'
+           style...
+           children:'珠峰培训' =>存放元素中的内容
+         }
+         ref: null
+         key: null
+         ...
+         __proto__: Object.prototype
+
+
+   3.ReactDOM.render(JSX语法最后生成对象，容器)，基于RENDER方法把生成的对象动态创建为DOM元素，插入到指定的容器中。
+
+
+
+
+
+
+
+       
+
 
 
 
