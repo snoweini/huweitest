@@ -237,6 +237,88 @@ import ReactDOM, {render} from 'react-dom';
    3.ReactDOM.render(JSX语法最后生成对象，容器)，基于RENDER方法把生成的对象动态创建为DOM元素，插入到指定的容器中。
 
 
+======================
+第十课
+react组件
+  不管是vue还是react框架，设计之初都是期望我们按照“组件/模块管理”方式来构建程序的，
+  也就是把一个程序划分为一个个的组件来单独处理。
+    [优势]
+       1.有助于多人协作开发
+       2.我们开发的组件可以复用
+       。。。
+
+    react中创建组件有两种方式：
+       函数声明式组件
+       基于继承component类来创建组件
+
+    src -> component 组件全放component里
+
+    import React  from 'react'
+
+export default function Dialog(props){
+    let {con, lx = 0, children} = props;
+    let tit = lx === 0 ? '系统提示' : '系统警告';
+    return  <section>
+        <h1>{tit}</h1>
+        <p>{con}</p>
+        {children}
+    </section>
+}
+
+组件里声明一个函数，返回jsx语法  就是组件
+index.js：
+render(<div>
+   <Dialog con={'哈哈哈'}>
+     <span>test children</span>
+   </Dialog>
+   <Dialog con="嘿嘿嘿" lx={1}/>
+</div>,document.getElementById('root'));
+属性  都通过  组件方法的参数props来接收。
+
+组件里的dom结构  也是props接收  用children 解构  在jsx里{children}
+这样直接大括号引用
+
+
+13课
+基于继承 COMPONENT类来创建组件
+
+class Dialog extends Component {
+  static defaultProps = {lx: '系统提示'}
+  constructor(props){
+    super(props)
+  }
+  render() {
+    let {con,lx} = this.props
+    return <div>
+      <h3>{lx}</h3>
+      {con}
+      </div>
+  }
+}
+用es6类继承的模式来 从Component类里继承
+props 写在 constructor 参数里
+super 继承 constructor 里的参数
+这里的props是只读的 不能做任何修改否则报错
+有一个render方法  最后返回一个jsx结构
+如果需要声明一个默认的属性  在私有属性下设置
+static defaultProps  这样this.props 里就能有这个
+默认设置的值
+
+
+总结:创建组件有两种方式“函数式”、“创建类式”
+    
+    函数式：
+       1.操作简单
+       2.能实现的功能简单，只是简单的调取和返回
+         不能使用声明周期函数
+
+    创建类式：
+       1. 操作相对复杂，但是也可以实现更为复杂的功能
+       2. 能够使用声明周期函数操作业务
+       3. 函数式可以理解为静态组件（组件中内容调取时已经固定很难修改，
+       ）函数式可以基于组件内部状态来动态更新渲染的内容
+       4.。。。。
+
 
 
 
