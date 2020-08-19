@@ -321,25 +321,88 @@ static defaultProps  这样this.props 里就能有这个
 
 
 
+16课
+react中的组件有两个非常重要的概念
+     1.组件的属性：【只读】调取组件的时候传递进来的信息
+     2.组件的状态：【读写】自己在组件中设定和规划的（只有类声明组件有，函数
+       式声明不存在状态的管理
+
+所谓函数式组件是静态组件：和执行普通函数一样，调取一次组件就把组件中内容获取到，插入到页面中，如果
+不重新调取组件，显示内容不会发生任何变化
+真是项目只有调取组件，组件内容不会再次改变 我们才用函数式组件
+
+=> 组件状态类似于vue中的数据驱动，我们数据绑定的时候是基于状态值绑定，当修改组件内部状态后
+  对应的jsx元素也会跟着重新渲染（差异渲染：只把数据改变的重新渲染，基于dom-diff算法完成）
+
+
+17课 
+jsx中的事件绑定
+。。。
+  render() {
+    return <button onClick={this.support}>支持</button>
+  }
+。。。
+
+  support(ev) {
+    // => this:undefined(不是我们理解的当前操作的元素)
+    // => ev.target 通过事件源可以获取当前操作的元素（一般很少操作，框架是用
+    数据去驱动所有dom的改变）
+  }
+
+如果能让方法中的this变成当前实例就好了，这样就可以操作当前的属性和状态
+<button onClick={this.support.bind(this)}>支持</button>
+或者用箭头函数
+support = ()=>{
+  //=>this 继承上下文中的this，真实项目中给jsx元素绑定方法一般都用箭头函数
+      目的是为了保证 函数中的this 还是实例
+}       
+
+
+18课
+react dom操作
+refs 是react中专门提供的操作dom实现需求的方式，refs是一个对象存储了当前组件中所有设置了ref属性的元素
+（元素ref的值是啥，refs里存的元素属性名就是啥）
+。。。。
+<span ref="spanLeft"></span>
+。。。。
+<span ref={x=>this.spanLeft = x}></span>
+。。。。
+=> ref="spanLeft"
+   是在当前实例上挂载一个属性refs（对象),存储所有的ref元素
+
+   x=>this.spanLeft = x
+    x代表当前元素，它的意思是，把当前元素直接挂载到实例上，后期如果要用元素
+    直接this.spanLeft获取即可
+
+
+react 组件当中  
+   1.基于数据驱动（修改状态数据，react帮我们重新渲染视图）完成的组件叫做“受控组件（受数据控制的组件）”
+   2.基于ref操作dom实现视图更新的，叫做“非受控组件”
+   => 真实项目中建议多使用受控组件
 
 
 
-       
+用onChange 可以实现 mvvm 的 视图影响数据
 
+20课 react生命周期函数
 
+  [基本流程]
+      constructor 创建一个组件
+      componentWillMount 第一次渲染之前
+      render 第一次渲染
+      componentDidMount 第一次渲染之后
 
+  [修改流程：当组件的状态数据发生改变或者传递给组件的属性发生改变（重新调用组件传递
+  不同属性）都会引发render重新执行渲染（差异渲染）]
+      shouldComponentUpdate 是否允许组件重新渲染（允许则执行后面，不允许直接结束）
+      componentWillUpdate 重新渲染之前
+      render 第二次及以后重新渲染
+      componentDidUpdate 重新渲染之后
 
+      componentWillReceiveProps：父组件把传递给子组件的属性发生改变后触发的钩子函数
 
-
-
-
-
-
-
-
-
-
-
+  [卸载：原有渲染的内容是不消失的，只不过以后不能基于数据改变视图]
+      componentWillUnmount 卸载组件之前（一般不用）
 
 
 
