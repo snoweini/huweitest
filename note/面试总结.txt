@@ -222,3 +222,138 @@ onUnload 生命周期函数--监听页面卸载
 闭包一定具有嵌套函数
 内层函数一定操作了外层函数的局部变量
 外层函数将内层函数返回外部，需要一个变量接住（全局变量）
+
+=>插槽slot
+1.匿名插槽/默认插槽  <slot></slot>
+2.具名插槽  <slot name="up"></slot>
+3.作用域插槽
+  父组件里：
+<template>
+  <div class="father">
+    <h3>这里是父组件</h3>
+    <!--第一次使用：用flex展示数据-->
+    <child>
+      <template slot-scope="user"><!--用slot-scope 命名作用域-->
+        <div class="tmpl"><!--user.data 作用域名下绑定的数据名-->
+          <span v-for="item in user.data">{{item}}</span>
+        </div>
+      </template>
+
+    </child>
+。。。。
+子组件：
+<template>
+  <div class="child">
+
+    <h3>这里是子组件</h3>
+    // 作用域插槽
+    <slot  :data="data"></slot> <!--子组件的slot上 绑定:data 数据-->
+  </div> 
+</template>
+
+ export default {
+    data: function(){
+      return {
+        data: ['zhangsan','lisi','wanwu','zhaoliu','tianqi','xiaoba']
+      }
+    }
+}
+
+=>Vue中v-model和v-bind区别
+由于v-model 只是语法糖， <input v-model="message"> 与下面的两行代码是一致的：
+<input v-bind:value="message" v-on:input="message = $event.target.value" />
+<input :value="message" @input="message = $event.target.value" />
+
+<p v-bind:class="someclass"></p>
+如果不加 v-bind 那么 someclass 就是个常量，没有任何动态数据参与。当加上 v-bind 之后，它的值 someclass 不是字符串，而是vue实例对应的 data.someclass 这个变量。
+
+=>v-on绑定多个方法：
+<p v-on="{click:dbClick,mousemove:MouseClick}"></p> 用对象的形式把 事件名和方法名做成键值对
+=>一个事件绑定多个函数：
+<p @click="one(),two()">点击</p>  事件名（）执行，用逗号隔开
+
+
+=>Vue 添加全局方法
+1.用vue的use添加
+src下新建plugin文件夹，用来存放插件
+比如想调用的方法名为$toTop,新建toTop.js，编写方法(全局方法最好用$开头)
+export default {
+  install (Vue, options) {
+    Vue.prototype.$toTop = function () {
+      console.log('Plugin Test')
+    }
+  }
+}
+在main.js中引入，添加
+// 插件
+import ToTop from './plugin/toTop' // 引入
+Vue.use(ToTop) // 添加
+然后就可以在组件中自由使用啦
+ mounted () {
+    this.$toTop()
+}
+
+2.用Vue.prototype添加
+在mian.js中写入函数
+Vue.prototype.getToken = function (){
+  ...
+}
+
+=>Vue动态路由
+在设置router里  路由path 里最后面加冒号：参数名 例如 path:'./main/:abc'
+一个“路径参数”使用冒号 : 标记。当匹配到一个路由时，参数值会被设置到 this.$route.params
+例如：
+模式：/user/:username	匹配路径：/user/evan $route.params：{ username: 'evan' }
+----------------------------------
+模式：/user/:username/post/:post_id	匹配路径：/user/evan/post/123 $route.params：{ username: 'evan', post_id: '123' }
+
+=>动态组件
+通过使用保留的 <component> 元素，动态地绑定到它的 is 特性，可以实现动态组件
+例子：
+<template>
+  <p id="app">
+   <component :is="currentView"></component>
+   <button @click="changeView('A')">切换到A</button>
+   <button @click="changeView('B')">切换到B</button>
+   <button @click="changeView('C')">切换到C</button>
+  </p>
+</template>
+
+<script>
+var app = new Vue({
+ el: '#app',
+ data: {
+  currentView: 'comA'
+ },
+ methods: {
+  changeView: function(data){
+   this.currentView = 'com'+ data　　//动态地改变currentView的值就可以动态挂载组件了。
+  }
+ },
+ components: {
+  comA: {
+   template: '<p>组件A</p>'
+  },
+  comB: {
+   template: '<p>组件B</p>'
+  },
+  comC: {
+   template: '<p>组件C</p>'
+  }
+ }
+});
+</script>
+点击就会切组件显示
+
+<keep-alive> 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。和 <transition> 相似，<keep-alive> 是一个抽象组件：它自身不会渲染一个 DOM 元素，也不会出现在父组件链中
+
+===>router-link 绑定事件的方式
+实现方法如下 
+使用.native 实现原生事件
+<router-link to="" @click.native="dialogWithdraw=true">跳转</router-link>
+
+==>子路由
+1.使用children数组来定义子路由
+
+
+
